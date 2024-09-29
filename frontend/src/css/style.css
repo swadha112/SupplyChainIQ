@@ -1,12 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply relative z-1 bg-whiten font-satoshi text-base font-normal text-body;
+    @apply font-satoshi font-normal text-base text-body bg-whiten relative z-1;
   }
 }
 
@@ -38,7 +36,7 @@
   @apply opacity-100;
 }
 .tableCheckbox:checked ~ div {
-  @apply border-primary bg-primary;
+  @apply bg-primary border-primary;
 }
 
 .apexcharts-legend-text {
@@ -87,7 +85,7 @@
 }
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
-  @apply fill-primary;
+  @apply !fill-primary;
 }
 .flatpickr-calendar.arrowTop:before {
   @apply dark:!border-b-boxdark;
@@ -119,7 +117,7 @@ span.flatpickr-weekday,
 }
 .flatpickr-day.inRange {
   @apply dark:!shadow-7;
-  box-shadow: -5px 0 0 #eff4fb, 5px 0 0 #eff4fb;
+  box-shadow: -5px 0 0 #EFF4FB, 5px 0 0 #EFF4FB;
 }
 .flatpickr-day.inRange,
 .flatpickr-day.prevMonthDay.inRange,
@@ -169,7 +167,7 @@ span.flatpickr-weekday,
 }
 
 .map-btn .jvm-zoom-btn {
-  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pt-0 pb-0.5 text-2xl leading-none text-body hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:text-bodydark dark:hover:border-primary dark:hover:text-white;
+  @apply flex items-center justify-center w-7.5 h-7.5 rounded border border-stroke dark:border-strokedark hover:border-primary dark:hover:border-primary bg-white hover:bg-primary text-body hover:text-white dark:text-bodydark dark:hover:text-white text-2xl leading-none px-0 pt-0 pb-0.5;
 }
 .mapOne .jvm-zoom-btn {
   @apply left-auto top-auto bottom-0;
@@ -197,7 +195,7 @@ span.flatpickr-weekday,
   @apply line-through;
 }
 .taskCheckbox:checked ~ .box {
-  @apply border-primary bg-primary dark:border-primary;
+  @apply bg-primary border-primary dark:border-primary;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
@@ -206,10 +204,10 @@ span.flatpickr-weekday,
   background-size: 20px;
 }
 .custom-input-date-1::-webkit-calendar-picker-indicator {
-  background-image: url(../images/icon/icon-calendar.svg);
+  background-image: url(./images/icon/icon-calendar.svg);
 }
 .custom-input-date-2::-webkit-calendar-picker-indicator {
-  background-image: url(../images/icon/icon-arrow-down.svg);
+  background-image: url(./images/icon/icon-arrow-down.svg);
 }
 
 [x-cloak] {
