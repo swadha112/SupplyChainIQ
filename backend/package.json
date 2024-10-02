@@ -4,7 +4,7 @@
   "description": "Work Nexus",
   "main": "App.js",
   "scripts": {
-    "start": "nodemon src/App.js",
+    "start": "nodemon server.js",
     "start_cron": "node backupCron.js",
     "build": "tsc --build",
     "start:prod": "pm2 start App.ts --name 'servercode' && pm2 save"
@@ -12,7 +12,7 @@
   "keywords": [
     "Startup Marketplace"
   ],
-  "author": "Viraj Bhartiya",
+  "author": "Swadha Aourva",
   "license": "ISC",
   "devDependencies": {
     "@types/compression": "^1.7.5",
