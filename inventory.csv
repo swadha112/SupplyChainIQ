@@ -1,0 +1,16 @@
+product_id,name,category,in_stock,reorder_level
+PROD001,Smartphone X,Electronics,120,30
+PROD002,Office Chair,Furniture,50,10
+PROD003,LED Monitor,Electronics,80,20
+PROD004,Winter Jacket,Clothing,200,40
+PROD005,Coffee Table,Furniture,15,5
+PROD006,Wireless Mouse,Electronics,100,25
+PROD007,Office Desk,Furniture,30,8
+PROD008,T-shirt,Clothing,500,100
+PROD009,Refrigerator,Electronics,10,3
+PROD010,Kitchen Blender,Electronics,40,12
+PROD011,Laptop Stand,Electronics,75,15
+PROD012,Dining Table,Furniture,20,4
+PROD013,Headphones,Electronics,60,10
+PROD014,Sofa Set,Furniture,25,6
+PROD015,Microwave Oven,Electronics,35,8

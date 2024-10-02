@@ -1,0 +1,16 @@
+supplier_id,name,category,performance,last_order_date
+SUP001,ElectroTech Inc.,Electronics,95,2024-09-25
+SUP002,Fresh Farm Foods,Food,89,2024-09-20
+SUP003,Home Furnish,Clothing,92,2024-09-21
+SUP004,FurniCo,Furniture,85,2024-09-18
+SUP005,Techie Gadgets,Electronics,90,2024-09-19
+SUP006,Best Clothing Co.,Clothing,88,2024-09-17
+SUP007,Fresh Fruits Supply,Food,91,2024-09-16
+SUP008,Kitchen Essentials,Furniture,87,2024-09-15
+SUP009,HighTech Co.,Electronics,94,2024-09-14
+SUP010,SmartWare,Clothing,93,2024-09-13
+SUP011,Global Textiles,Clothing,86,2024-09-12
+SUP012,Food World,Food,90,2024-09-11
+SUP013,Furniture Hub,Furniture,89,2024-09-10
+SUP014,Gadget Zone,Electronics,92,2024-09-09
+SUP015,Organic Supplies,Food,91,2024-09-08

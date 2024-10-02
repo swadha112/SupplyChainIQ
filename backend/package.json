@@ -2,9 +2,9 @@
   "name": "servercode",
   "version": "1.0.0",
   "description": "Work Nexus",
-  "main": "App.ts",
+  "main": "App.js",
   "scripts": {
-    "start": "nodemon src/App.ts",
+    "start": "nodemon src/App.js",
     "start_cron": "node backupCron.js",
     "build": "tsc --build",
     "start:prod": "pm2 start App.ts --name 'servercode' && pm2 save"
@@ -37,23 +37,26 @@
     "cron": "^3.1.6",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",
-    "express": "^4.18.2",
+    "express": "^4.21.0",
     "express-jwt": "^8.4.1",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mocha": "^10.2.0",
     "moment": "^2.30.1",
+    "mongodb": "^6.9.0",
     "mongoose": "^8.4.0",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.8",
+    "pandas": "^0.0.3",
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "path": "^0.12.7",
     "react-customizable-progressbar": "^1.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "xlsx": "^0.18.5"
   }
 }

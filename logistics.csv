@@ -1,0 +1,16 @@
+shipment_id,order_id,destination,status,estimated_delivery
+SHIP001,ORD001,"New York, NY",In Transit,05-10-2024
+SHIP002,ORD002,"Los Angeles, CA",Out for Delivery,02-10-2024
+SHIP003,ORD003,"Chicago, IL",Shipped,06-10-2024
+SHIP004,ORD004,"Houston, TX",Processing,04-10-2024
+SHIP005,ORD005,"San Francisco, CA",In Transit,07-10-2024
+SHIP006,ORD006,"Miami, FL",Out for Delivery,03-10-2024
+SHIP007,ORD007,"Dallas, TX",Shipped,05-10-2024
+SHIP008,ORD008,"Seattle, WA",Processing,06-10-2024
+SHIP009,ORD009,"Denver, CO",In Transit,08-10-2024
+SHIP010,ORD010,"Atlanta, GA",Out for Delivery,04-10-2024
+SHIP011,ORD011,"Boston, MA",Shipped,09-10-2024
+SHIP012,ORD012,"Phoenix, AZ",Processing,10-10-2024
+SHIP013,ORD013,"Philadelphia, PA",In Transit,11-10-2024
+SHIP014,ORD014,"San Diego, CA",Out for Delivery,12-10-2024
+SHIP015,ORD015,"Austin, TX",Shipped,13-10-2024

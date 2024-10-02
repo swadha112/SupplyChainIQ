@@ -1,0 +1,16 @@
+order_id,customer,date,status,total
+ORD001,John Doe,2024-09-30,Processing,450.75
+ORD002,Jane Smith,2024-09-29,Shipped,1200
+ORD003,Michael Johnson,2024-09-28,Delivered,750.5
+ORD004,Alice Brown,2024-09-27,Processing,300.4
+ORD005,Tom Harris,2024-09-26,Shipped,980.3
+ORD006,Emma Wilson,2024-09-25,Delivered,400.9
+ORD007,Liam Martin,2024-09-24,Processing,600.6
+ORD008,Olivia King,2024-09-23,Shipped,1200.25
+ORD009,Noah Scott,2024-09-22,Delivered,900.45
+ORD010,Sophia Adams,2024-09-21,Processing,500.7
+ORD011,Lucas Carter,2024-09-20,Shipped,850.8
+ORD012,Mia White,2024-09-19,Delivered,650.25
+ORD013,Ethan Turner,2024-09-18,Processing,720
+ORD014,Ava Green,2024-09-17,Shipped,910.35
+ORD015,James Hall,2024-09-16,Delivered,1020.45
