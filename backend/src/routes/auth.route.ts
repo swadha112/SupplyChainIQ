@@ -7,7 +7,7 @@ import {
 } from "../validators/auth.validator";
 
 import { runValidation } from "../validators/index.validator";
-import { signup, signin } from "../controller/auth.controller";
+import { signup, signin } from "../controllers/auth.controller";
 
 router.post("/signup", userSignupValidator, runValidation, signup);
 router.post("/signin", userSigninValidator, runValidation, signin);

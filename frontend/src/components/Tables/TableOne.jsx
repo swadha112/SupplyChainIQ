@@ -10,7 +10,9 @@ const Orders = () => {
     // Fetch orders from the backend API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orders');
+        console.log('Attempting to fetch orders...');
+        const response = await axios.get('http://localhost:5050/api/orders');
+        console.log('Orders fetched successfully:', response.data);
         setOrders(response.data);
         setLoading(false);
       } catch (err) {
