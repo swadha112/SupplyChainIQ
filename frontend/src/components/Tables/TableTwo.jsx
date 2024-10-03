@@ -7,10 +7,10 @@ const Suppliers = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch orders from the backend API
+    // Fetch suppliers from the backend API
     const fetchSuppliers = async () => {
       try {
-        console.log('Attempting to fetch orders...');
+        console.log('Attempting to fetch suppliers...');
         const response = await axios.get('http://localhost:5050/api/suppliers');
         console.log('Suppliers fetched successfully:', response.data);
         setSuppliers(response.data);
@@ -24,12 +24,12 @@ const Suppliers = () => {
     fetchSuppliers();
   }, []);
 
-  if (loading) return <p>Loading ssupps...</p>;
+  if (loading) return <p>Loading suppliers...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Orders</h2>
+      <h2>Suppliers</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -41,17 +41,15 @@ const Suppliers = () => {
           </tr>
         </thead>
         <tbody>
-          {suppliers.map((suppliers) => (
-            <tr key={suppliers._id} style={{ borderBottom: '1px solid #ddd' }}>
-              <td style={cellStyle}>{suppliers.supplier_id}</td>
-              <td style={cellStyle}>{suppliers.name}</td>
-              <td style={cellStyle}>{suppliers.category}</td>
-              <td style={cellStyle}>{suppliers.performance}</td>
-              <td style={cellStyle}>{suppliers.last_order_date}</td>
-              {/* <td style={{ ...cellStyle, ...getStatusStyle(order.status) }}>
-                {order.status}
+          {suppliers.map((supplier) => (
+            <tr key={supplier._id} style={{ borderBottom: '1px solid #ddd' }}>
+              <td style={cellStyle}>{supplier.supplier_id}</td>
+              <td style={cellStyle}>{supplier.name}</td>
+              <td style={cellStyle}>{supplier.category}</td>
+              <td style={{ ...cellStyle, ...getPerformanceStyle(supplier.performance) }}>
+                {supplier.performance}
               </td>
-              <td style={cellStyle}>${order.total}</td> */}
+              <td style={cellStyle}>{new Date(supplier.last_order_date).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>
@@ -65,7 +63,7 @@ const headerStyle = {
   borderBottom: '2px solid #000',
   padding: '10px',
   textAlign: 'left',
-  backgroundColor: '#f2f2f2'
+  backgroundColor: '#f2f2f2',
 };
 
 // Styles for table cells
@@ -74,18 +72,16 @@ const cellStyle = {
   textAlign: 'left',
 };
 
-// Function to return style based on the status
-const getStatusStyle = (status) => {
-  switch (status.toLowerCase()) {
-    case 'delivered':
-      return { color: 'green', fontWeight: 'bold' };
-    case 'shipped':
-      return { color: 'orange', fontWeight: 'bold' };
-    case 'processing':
-      return { color: 'red', fontWeight: 'bold' };
-    default:
-      return {};
+// Function to return style based on the performance value
+const getPerformanceStyle = (performance) => {
+  if (performance > 90) {
+    return { color: 'green', fontWeight: 'bold' };
+  } else if (performance >= 80 && performance <= 90) {
+    return { color: 'orange', fontWeight: 'bold' };
+  } else if (performance < 80) {
+    return { color: 'red', fontWeight: 'bold' };
   }
+  return {};
 };
 
 export default Suppliers;

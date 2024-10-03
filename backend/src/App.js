@@ -41,6 +41,7 @@
 const express = require('express');
 const cors = require('cors');
 const orderRoutes = require('./routes/orderRoutes');
+const supplierRoutes= require('./routes/supplierRoutes')
 const errorHandler = require('./middleware/util/errorHandler');
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
@@ -59,6 +60,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/orders', orderRoutes);
+app.use('/api/suppliers', supplierRoutes);
 
 // Health Check Route
 app.get("/", (req, res) => {
