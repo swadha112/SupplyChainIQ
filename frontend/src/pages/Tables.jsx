@@ -7,13 +7,10 @@ import TableFour from '../components/Tables/TableFour';
 const Tables = () => {
   return (
     <>
-      <Breadcrumb pageName="Tables" />
+      <Breadcrumb pageName="Orders" />
 
       <div className="flex flex-col gap-10">
         <TableOne />
-        <TableTwo />
-        <TableThree />
-        <TableFour />
       </div>
     </>
   );

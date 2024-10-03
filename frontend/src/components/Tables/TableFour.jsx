@@ -16,7 +16,7 @@ const Logistics = () => {
         setLogistics(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Error fetching orders');
+        setError('Error fetching logistics');
         setLoading(false);
       }
     };

@@ -29,11 +29,11 @@ const Orders = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Orders</h2>
+      
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={headerStyle}>Order ID</th>
+            <th style={headerStyle} >Order ID</th>
             <th style={headerStyle}>Customer</th>
             <th style={headerStyle}>Date</th>
             <th style={headerStyle}>Status</th>
