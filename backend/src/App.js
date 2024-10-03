@@ -43,6 +43,7 @@ const cors = require('cors');
 const orderRoutes = require('./routes/orderRoutes');
 const supplierRoutes= require('./routes/supplierRoutes')
 const inventoryRoutes = require ('./routes/inventoryRoutes')
+const logisticsRoutes = require ('./routes/logisticsRoutes')
 const errorHandler = require('./middleware/util/errorHandler');
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
@@ -63,6 +64,7 @@ app.use(express.json());
 app.use('/api/orders', orderRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/logistics', logisticsRoutes);
 // Health Check Route
 app.get("/", (req, res) => {
   res.send("API is running...");

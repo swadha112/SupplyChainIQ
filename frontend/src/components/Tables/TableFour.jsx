@@ -49,7 +49,7 @@ const Logistics = () => {
               <td style={{ ...cellStyle, ...getStatusStyle(logistics.status) }}>
                 {logistics.status}
               </td>
-              <td style={cellStyle}>${logistics.estimated_delivery}</td>
+              <td style={cellStyle}>{logistics.estimated_delivery}</td>
             </tr>
           ))}
         </tbody>
@@ -75,12 +75,14 @@ const cellStyle = {
 // Function to return style based on the status
 const getStatusStyle = (status) => {
   switch (status.toLowerCase()) {
-    case 'delivered':
+    case 'out for delivery':
       return { color: 'green', fontWeight: 'bold' };
     case 'shipped':
       return { color: 'orange', fontWeight: 'bold' };
     case 'processing':
       return { color: 'red', fontWeight: 'bold' };
+    case 'in transit':
+      return {color: 'lightblue', fontWeight:'bold'}
     default:
       return {};
   }
