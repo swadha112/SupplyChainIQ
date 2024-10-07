@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -26,6 +38,39 @@ const Inventory = () => {
 
   if (loading) return <p>Loading inventory...</p>;
   if (error) return <p>{error}</p>;
+
+  // Filter items that need immediate restocking
+  const itemsToRestock = inventory.filter(item => item.in_stock <= item.reorder_level);
+
+  // Prepare data for the chart
+  const chartData = {
+    labels: inventory.map(item => item.name),
+    datasets: [
+      {
+        label: 'In Stock',
+        data: inventory.map(item => item.in_stock),
+        backgroundColor: 'rgba(75, 192, 192, 1.2)',
+      },
+      {
+        label: 'Reorder Level',
+        data: inventory.map(item => item.reorder_level),
+        backgroundColor: '#89f766',
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Inventory vs Reorder Level',
+      },
+    },
+  };
 
   return (
     <div style={{ padding: '20px' }}>
@@ -54,6 +99,27 @@ const Inventory = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Chart for Inventory vs Reorder Level */}
+      <div style={{ marginTop: '40px' }}>
+        <Bar data={chartData} options={chartOptions} />
+      </div>
+
+      {/* Products that need immediate restocking */}
+      <div style={{ marginTop: '40px' }}>
+        <h3>Products that need immediate restocking</h3>
+        {itemsToRestock.length > 0 ? (
+          <ul>
+            {itemsToRestock.map(item => (
+              <li key={item._id}>
+                {item.name} - In Stock: {item.in_stock}, Reorder Level: {item.reorder_level}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>All products are sufficiently stocked.</p>
+        )}
+      </div>
     </div>
   );
 };

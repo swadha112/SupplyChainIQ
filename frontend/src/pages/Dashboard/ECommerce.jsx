@@ -74,7 +74,7 @@ const ECommerce = () => {
         </CardDataStats>
         <CardDataStats title="Supplier Performance" total="92%" rate="0.95%" levelDown>
           <svg
-            className="fill-primary dark:fill-white"
+            className="fill-green dark:fill-white"
             width="22"
             height="18"
             viewBox="0 0 22 18"
@@ -105,7 +105,7 @@ const ECommerce = () => {
         <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div>
-        <ChatCard />
+        {/* <ChatCard /> */}
       </div>
     </>
   );
