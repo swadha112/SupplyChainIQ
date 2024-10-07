@@ -52,6 +52,7 @@ module.exports = {
         danger: '#D34053',
         warning: '#FFA70B',
         green:'#89ff76',
+        brightgreen: '#89f212',
       },
       fontSize: {
         'title-xxl': ['44px', '55px'],

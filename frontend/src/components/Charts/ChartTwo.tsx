@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const options: ApexOptions = {
-  colors: ['#3C50E0', '#80CAEE'],
+  colors: ['#3C50E0', '#89ff76'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'bar',
