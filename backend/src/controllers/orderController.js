@@ -29,6 +29,7 @@ const getOrders = async (req, res, next) => {
 };
 
 // Create a new order and link it with logistics
+// Get the last shipment ID, increment, and create logistics
 const createOrder = async (req, res, next) => {
   try {
     const { order_id, customer, date, total, destination } = req.body;
@@ -43,14 +44,18 @@ const createOrder = async (req, res, next) => {
       destination
     });
 
+    // Generate a new shipment ID based on the last shipment
+    const lastShipment = await Logistics.findOne().sort({ shipment_id: -1 });
+    const lastShipmentId = lastShipment ? parseInt(lastShipment.shipment_id.replace('SHIP', '')) : 0;
+    const newShipmentId = `SHIP${String(lastShipmentId + 1).padStart(3, '0')}`;
+
     // Create corresponding logistics entry
     await Logistics.create({
-      trackingId: order_id,
-      origin: 'Warehouse', // Example origin
-      destination,
+      shipment_id: newShipmentId,
+      order_id: order_id,
+      destination: destination,
       status: 'Processing',
-      estimatedDelivery: new Date(new Date().setDate(new Date().getDate() + 7)), // Example estimated delivery date
-      currentLocation: { lat: 0, lng: 0 }, // Default starting coordinates
+      estimated_delivery: new Date(new Date().setDate(new Date().getDate() + 7)), // Example estimated delivery date
     });
 
     res.status(201).json(newOrder);
@@ -58,6 +63,7 @@ const createOrder = async (req, res, next) => {
     next(err);
   }
 };
+
 
 // Update the order status and synchronize with logistics status
 const updateOrderStatus = async (req, res, next) => {
@@ -68,7 +74,7 @@ const updateOrderStatus = async (req, res, next) => {
     const updatedOrder = await Order.findOneAndUpdate({ order_id }, { status }, { new: true });
 
     // Update logistics status for the corresponding order
-    await Logistics.findOneAndUpdate({ trackingId: order_id }, { status });
+    await Logistics.findOneAndUpdate({ shipment_id: order_id }, { status });
 
     res.json(updatedOrder);
   } catch (err) {

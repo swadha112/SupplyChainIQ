@@ -112,11 +112,17 @@ const Logistics = () => {
   }, []);
 
   const handleStatusUpdate = async (shipment_id) => {
+    if (!newStatus) {
+      alert('Please select a new status');
+      return;
+    }
+    
     try {
       await axios.put(`http://localhost:5050/api/logistics/status`, { shipment_id, newStatus });
       // Re-fetch updated logistics data
       const updatedLogistics = await axios.get('http://localhost:5050/api/logistics');
       setLogistics(updatedLogistics.data);
+      setNewStatus(''); // Reset status after saving
     } catch (err) {
       console.error('Error updating status', err);
     }
@@ -166,10 +172,9 @@ const Logistics = () => {
                     className="bg-white border rounded px-2"
                   >
                     <option value="">Update Status</option>
-                    <option value="processing">Processing</option>
+                    <option value="Processing">Processing</option>
                     <option value="Shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    
+                    <option value="Delivered">Delivered</option>
                   </select>
                   <button onClick={() => handleStatusUpdate(shipment.shipment_id)}>Save</button>
                 </div>
@@ -183,3 +188,4 @@ const Logistics = () => {
 };
 
 export default Logistics;
+

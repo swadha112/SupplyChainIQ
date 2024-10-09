@@ -96,6 +96,13 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newOrder, setNewOrder] = useState({
+    order_id: '',
+    customer: '',
+    date: '',
+    total: '',
+    destination: '', // Added destination field
+  });
 
   useEffect(() => {
     // Fetch orders from the backend API
@@ -113,12 +120,77 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewOrder({ ...newOrder, [name]: value });
+  };
+
+  const handleCreateOrder = async (e) => {
+    e.preventDefault();
+    try {
+      // Create new order (status defaults to "Processing")
+      await axios.post('http://localhost:5050/api/orders', newOrder);
+      // Re-fetch orders after adding a new one
+      const updatedOrders = await axios.get('http://localhost:5050/api/orders');
+      setOrders(updatedOrders.data);
+      setNewOrder({ order_id: '', customer: '', date: '', total: '', destination: '' });
+    } catch (err) {
+      setError('Error creating order');
+    }
+  };
+
   if (loading) return <p>Loading orders...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div style={{ padding: '20px' }}>
       <h2>Orders</h2>
+      
+      {/* Order Creation Form */}
+      <form onSubmit={handleCreateOrder}>
+        <input
+          type="text"
+          name="order_id"
+          placeholder="Order ID"
+          value={newOrder.order_id}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="customer"
+          placeholder="Customer"
+          value={newOrder.customer}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="date"
+          placeholder="Date"
+          value={newOrder.date}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="number"
+          step="0.01" // Ensures decimal input
+          name="total"
+          placeholder="Total"
+          value={newOrder.total}
+          onChange={handleInputChange}
+          required
+        />
+        <input
+          type="text"
+          name="destination"
+          placeholder="Destination"
+          value={newOrder.destination}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Add Order</button>
+      </form>
 
       {/* Order Table */}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
@@ -139,19 +211,17 @@ const Orders = () => {
               <td style={cellStyle}>{order.customer}</td>
               <td style={cellStyle}>{order.date}</td>
               <td style={cellStyle}>
-                {/* Highlight status */}
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   order.status.toLowerCase() === 'delivered' ? 'bg-blue-100 text-blue-800' :
                   order.status.toLowerCase() === 'shipped' ? 'bg-orange-100 text-orange-800' :
                   order.status.toLowerCase() === 'processing' ? 'bg-purple-100 text-purple-800' :
                   order.status.toLowerCase() === 'in transit' ? 'bg-green-100 text-green-800' :
-                  order.status.toLowerCase() === 'delayed' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
                   {order.status}
                 </span>
               </td>
-              <td style={cellStyle}>${parseFloat(order.total.$numberDecimal).toFixed(2)}</td>
+              <td style={cellStyle}>${parseFloat(order.total.$numberDecimal).toFixed(2)}</td> {/* Adjusting for decimal */}
               <td style={cellStyle}>{order.destination}</td>
             </tr>
           ))}
@@ -166,11 +236,12 @@ const headerStyle = {
   borderBottom: '2px solid #000',
   padding: '10px',
   textAlign: 'left',
-  backgroundColor: '#f2f2f2',
+  backgroundColor: '#f2f2f2'
 };
 const cellStyle = {
   padding: '10px',
-  textAlign: 'left',
+  textAlign: 'left'
 };
 
 export default Orders;
+
