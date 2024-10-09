@@ -33,19 +33,11 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <DefaultLayout>
+    <>
       <Routes>
+        {/* Home page without DefaultLayout */}
         <Route
-          index
-          element={
-            <>
-              <PageTitle title="SupplyChainIQ" />
-              <ECommerce />
-            </>
-          }
-        />
-        <Route
-          path="/home"
+          path="/"
           element={
             <>
               <PageTitle title="Home | SupplyChainIQ" />
@@ -53,107 +45,127 @@ function App() {
             </>
           }
         />
+
+        {/* All other routes wrapped in DefaultLayout */}
         <Route
-          path="/calendar"
+          path="*"
           element={
-            <>
-              <PageTitle title="Calendar | SupplyChainIQ" />
-              <Calendar />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile |SuppyChainIQ" />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements |SuppyChainIQ" />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout | SuppyChainIQ" />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables | SuppyChainIQ" />
-              <Tables />
-            </>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <PageTitle title="Settings | SuppyChainIQ" />
-              <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart | SuppyChainIQ" />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts | SuppyChainIQ" />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons | SuppyChainIQ" />
-              <Buttons />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signin"
-          element={
-            <>
-              <PageTitle title="Signin | SuppyChainIQ" />
-              <SignIn />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signup"
-          element={
-            <>
-              <PageTitle title="Signup |SuppyChainIQ" />
-              <SignUp />
-            </>
+            <DefaultLayout>
+              <Routes>
+                <Route
+                  path="/ecommerce"
+                  element={
+                    <>
+                      <PageTitle title="SupplyChainIQ" />
+                      <ECommerce />
+                    </>
+                  }
+                />
+                <Route
+                  path="/calendar"
+                  element={
+                    <>
+                      <PageTitle title="Calendar | SupplyChainIQ" />
+                      <Calendar />
+                    </>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <>
+                      <PageTitle title="Profile |SuppyChainIQ" />
+                      <Profile />
+                    </>
+                  }
+                />
+                <Route
+                  path="/forms/form-elements"
+                  element={
+                    <>
+                      <PageTitle title="Form Elements |SuppyChainIQ" />
+                      <FormElements />
+                    </>
+                  }
+                />
+                <Route
+                  path="/forms/form-layout"
+                  element={
+                    <>
+                      <PageTitle title="Form Layout | SuppyChainIQ" />
+                      <FormLayout />
+                    </>
+                  }
+                />
+                <Route
+                  path="/tables"
+                  element={
+                    <>
+                      <PageTitle title="Tables | SuppyChainIQ" />
+                      <Tables />
+                    </>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <>
+                      <PageTitle title="Settings | SuppyChainIQ" />
+                      <Settings />
+                    </>
+                  }
+                />
+                <Route
+                  path="/chart"
+                  element={
+                    <>
+                      <PageTitle title="Basic Chart | SuppyChainIQ" />
+                      <Chart />
+                    </>
+                  }
+                />
+                <Route
+                  path="/ui/alerts"
+                  element={
+                    <>
+                      <PageTitle title="Alerts | SuppyChainIQ" />
+                      <Alerts />
+                    </>
+                  }
+                />
+                <Route
+                  path="/ui/buttons"
+                  element={
+                    <>
+                      <PageTitle title="Buttons | SuppyChainIQ" />
+                      <Buttons />
+                    </>
+                  }
+                />
+                <Route
+                  path="/auth/signin"
+                  element={
+                    <>
+                      <PageTitle title="Signin | SuppyChainIQ" />
+                      <SignIn />
+                    </>
+                  }
+                />
+                <Route
+                  path="/auth/signup"
+                  element={
+                    <>
+                      <PageTitle title="Signup |SuppyChainIQ" />
+                      <SignUp />
+                    </>
+                  }
+                />
+              </Routes>
+            </DefaultLayout>
           }
         />
       </Routes>
-    </DefaultLayout>
+    </>
   );
 }
 
