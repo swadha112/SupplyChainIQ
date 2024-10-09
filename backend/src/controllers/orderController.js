@@ -31,15 +31,22 @@ const getOrders = async (req, res, next) => {
 // Create a new order and link it with logistics
 const createOrder = async (req, res, next) => {
   try {
-    const { order_id, customer, date, status, total, destination } = req.body;
+    const { order_id, customer, date, total, destination } = req.body;
 
-    // Create new order
-    const newOrder = await Order.create({ order_id, customer, date, status, total });
+    // Create new order, default status is set to "Processing"
+    const newOrder = await Order.create({
+      order_id,
+      customer,
+      date, // date remains a string
+      status: 'Processing', // Default status set here
+      total: parseFloat(total), // Parse total to floating point
+      destination
+    });
 
     // Create corresponding logistics entry
     await Logistics.create({
       trackingId: order_id,
-      origin: 'Warehouse', // You can modify this as needed
+      origin: 'Warehouse', // Example origin
       destination,
       status: 'Processing',
       estimatedDelivery: new Date(new Date().setDate(new Date().getDate() + 7)), // Example estimated delivery date
