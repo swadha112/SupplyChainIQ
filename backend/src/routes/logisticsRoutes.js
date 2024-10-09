@@ -10,21 +10,13 @@
 
 const express = require('express');
 const router = express.Router();
-const logisticsController = require('../controllers/logisticsController');
+const { getLogistics, updateShipmentStatus } = require('../controllers/logisticsController');
 
-// Get all logistics
-router.get('/', logisticsController.getAllLogistics);
+// Route to get all logistics data
+router.get('/', getLogistics);
 
-// Get logistics by tracking ID
-router.get('/:trackingId', logisticsController.getLogisticsByTrackingId);
-
-// Create a new logistics entry
-router.post('/', logisticsController.createLogistics);
-
-// Update logistics status
-router.patch('/:trackingId', logisticsController.updateLogisticsStatus);
-
-// Get logistics status statistics
-router.get('/stats/logisticsStatus', logisticsController.getLogisticsStatusStats);
+// Route to update shipment status
+router.put('/status', updateShipmentStatus);
 
 module.exports = router;
+

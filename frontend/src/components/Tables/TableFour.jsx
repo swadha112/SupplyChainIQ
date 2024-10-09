@@ -92,135 +92,94 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const Logistics = () => {
   const [logistics, setLogistics] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedLogistics, setSelectedLogistics] = useState(null);
   const [newStatus, setNewStatus] = useState('');
 
-  const googleMapsApiKey = 'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your Google Maps API Key
-
   useEffect(() => {
-    // Fetch logistics from the backend API
+    // Fetch logistics data from the backend
     const fetchLogistics = async () => {
       try {
         const response = await axios.get('http://localhost:5050/api/logistics');
         setLogistics(response.data);
-        setLoading(false);
       } catch (err) {
-        setError('Error fetching logistics');
-        setLoading(false);
+        console.error('Error fetching logistics data', err);
       }
     };
 
     fetchLogistics();
   }, []);
 
-  const handleStatusChange = async (trackingId) => {
+  const handleStatusUpdate = async (shipment_id) => {
     try {
-      await axios.patch(`http://localhost:5050/api/logistics/${trackingId}`, { status: newStatus });
-      // Update logistics state after successful update
+      await axios.put(`http://localhost:5050/api/logistics/status`, { shipment_id, newStatus });
+      // Re-fetch updated logistics data
       const updatedLogistics = await axios.get('http://localhost:5050/api/logistics');
       setLogistics(updatedLogistics.data);
-      setNewStatus('');
-      setSelectedLogistics(null);
     } catch (err) {
-      setError('Error updating status');
+      console.error('Error updating status', err);
     }
   };
-
-  if (loading) return <p>Loading logistics...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <div style={{ padding: '20px' }}>
       <h2>Logistics</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+
+      {/* Logistics Table */}
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
           <tr>
-            <th style={headerStyle}>Tracking ID</th>
-            <th style={headerStyle}>Origin</th>
-            <th style={headerStyle}>Destination</th>
-            <th style={headerStyle}>Status</th>
-            <th style={headerStyle}>Estimated Delivery</th>
-            <th style={headerStyle}>Actions</th>
+            <th>Tracking ID</th>
+            <th>Order ID</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th>Est. Delivery</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {logistics.map((logistic) => (
-            <tr key={logistic._id} style={{ borderBottom: '1px solid #ddd' }}>
-              <td style={cellStyle}>{logistic.trackingId}</td>
-              <td style={cellStyle}>{logistic.origin}</td>
-              <td style={cellStyle}>{logistic.destination}</td>
-              <td style={{ ...cellStyle, ...getStatusStyle(logistic.status) }}>
-                {logistic.status}
+          {logistics.map((shipment) => (
+            <tr key={shipment.shipment_id} style={{ borderBottom: '1px solid #ddd' }}>
+              <td>{shipment.shipment_id}</td>
+              <td>{shipment.order_id}</td>
+              <td>{shipment.destination}</td>
+              <td>
+                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                  shipment.status === 'In Transit' ? 'bg-green-100 text-green-800' :
+                  shipment.status === 'Shipped' ? 'bg-yellow-100 text-yellow-800' :
+                  shipment.status === 'Delivered' ? 'bg-blue-100 text-blue-800' :
+                  'bg-purple-100 text-purple-800'
+                }`}>
+                  {shipment.status}
+                </span>
               </td>
-              <td style={cellStyle}>{new Date(logistic.estimatedDelivery).toLocaleDateString()}</td>
-              <td style={cellStyle}>
-                <button onClick={() => setSelectedLogistics(logistic)}>Track Order</button>
-                <button onClick={() => setSelectedLogistics(logistic)}>Update Status</button>
+              <td>{shipment.estimated_delivery}</td>
+              <td>
+                <div className="flex space-x-2">
+                  <button onClick={() => alert(`Tracking Shipment: ${shipment.shipment_id}`)}>
+                    Track Order
+                  </button>
+                  <select
+                    onChange={(e) => setNewStatus(e.target.value)}
+                    value={newStatus}
+                    className="bg-white border rounded px-2"
+                  >
+                    <option value="">Update Status</option>
+                    <option value="processing">Processing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    
+                  </select>
+                  <button onClick={() => handleStatusUpdate(shipment.shipment_id)}>Save</button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {selectedLogistics && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Track Order: {selectedLogistics.trackingId}</h3>
-          {/* Google Maps Component */}
-          <LoadScript googleMapsApiKey={googleMapsApiKey}>
-            <GoogleMap
-              mapContainerStyle={{ height: '400px', width: '100%' }}
-              center={{ lat: selectedLogistics.currentLocation.lat, lng: selectedLogistics.currentLocation.lng }}
-              zoom={10}
-            >
-              <Marker
-                position={{ lat: selectedLogistics.currentLocation.lat, lng: selectedLogistics.currentLocation.lng }}
-              />
-            </GoogleMap>
-          </LoadScript>
-
-          {/* Update Status Form */}
-          <div style={{ marginTop: '20px' }}>
-            <h3>Update Shipment Status for: {selectedLogistics.trackingId}</h3>
-            <input
-              type="text"
-              placeholder="New Status"
-              value={newStatus}
-              onChange={(e) => setNewStatus(e.target.value)}
-              required
-            />
-            <button onClick={() => handleStatusChange(selectedLogistics.trackingId)}>Update Status</button>
-          </div>
-        </div>
-      )}
     </div>
   );
-};
-
-// Styles for table header and cells
-const headerStyle = {
-  borderBottom: '2px solid #000',
-  padding: '10px',
-  textAlign: 'left',
-  backgroundColor: '#f2f2f2'
-};
-const cellStyle = {
-  padding: '10px',
-  textAlign: 'left'
-};
-const getStatusStyle = (status) => {
-  switch (status.toLowerCase()) {
-    case 'delivered': return { color: 'green', fontWeight: 'bold' };
-    case 'in transit': return { color: 'blue', fontWeight: 'bold' };
-    case 'processing': return { color: 'red', fontWeight: 'bold' };
-    case 'delayed': return { color: 'orange', fontWeight: 'bold' };
-    default: return {};
-  }
 };
 
 export default Logistics;
