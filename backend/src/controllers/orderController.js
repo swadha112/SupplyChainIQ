@@ -49,13 +49,27 @@ const createOrder = async (req, res, next) => {
     const lastShipmentId = lastShipment ? parseInt(lastShipment.shipment_id.replace('SHIP', '')) : 0;
     const newShipmentId = `SHIP${String(lastShipmentId + 1).padStart(3, '0')}`;
 
+    // Create a function to format the date as DD-MM-YYYY
+    const formatDate = (date) => {
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    // Calculate the estimated delivery date
+    const estimatedDeliveryDate = new Date(new Date().setDate(new Date().getDate() + 7));
+    
+    // Format the estimated delivery date as DD-MM-YYYY
+    const formattedEstimatedDelivery = formatDate(estimatedDeliveryDate);
+
     // Create corresponding logistics entry
     await Logistics.create({
       shipment_id: newShipmentId,
       order_id: order_id,
       destination: destination,
       status: 'Processing',
-      estimated_delivery: new Date(new Date().setDate(new Date().getDate() + 7)), // Example estimated delivery date
+      estimated_delivery: formattedEstimatedDelivery, // Store as DD-MM-YYYY string
     });
 
     res.status(201).json(newOrder);
@@ -63,6 +77,7 @@ const createOrder = async (req, res, next) => {
     next(err);
   }
 };
+
 
 
 // Update the order status and synchronize with logistics status
