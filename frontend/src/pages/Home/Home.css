@@ -1,0 +1,77 @@
+/* General Styles */
+.home-container {
+    padding: 20px;
+}
+
+/* Section 1: Header Content */
+.content1 {
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    flex-wrap: wrap; /* Makes it wrap on smaller screens */
+}
+
+.text-section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.image-section img {
+    width: 300px;
+    height: auto;
+}
+
+/* Section 2: Solutions */
+.content2 {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+/* Section 3: Why Choose Us */
+.content3 {
+    background-color: black;
+    padding: 20px;
+    text-align: center;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+.content1 h1{
+    color: yellowgreen;
+    font-size: 1.85em;
+    text-align: left;
+    margin:20px 0;
+    
+}
+
+.content3 h1{
+    color: yellowgreen;
+    font-size: 1.85em;
+    text-align: left;
+    margin:20px 0;
+    
+}
+.heading2{
+    color: black;
+    font-size: 1.85em;
+    text-align: left;
+    margin:20px 0;
+}
+
+h2{
+    color: white;
+    
+}
