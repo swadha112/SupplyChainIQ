@@ -7,13 +7,16 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     margin:20px;
+    
+
 }
 
 .solution-card img {
     width: 200px;
     height: auto;
     margin-bottom: 15px;
-    align-content: center;
+    margin-left: 3.75em;
+    align-items: center;
 }
 
 .solution-card:hover {
