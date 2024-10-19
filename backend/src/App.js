@@ -40,6 +40,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const emailRoutes = require('./routes/emailRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const supplierRoutes= require('./routes/supplierRoutes')
 const inventoryRoutes = require ('./routes/inventoryRoutes')
@@ -65,6 +66,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/logistics', logisticsRoutes);
+app.use('/api', emailRoutes);
 // Health Check Route
 app.get("/", (req, res) => {
   res.send("API is running...");
