@@ -1,25 +1,14 @@
-// const mongoose = require('mongoose');
-
-// const logisticsSchema = new mongoose.Schema({
-//   shipment_id: { type: String, required: true, unique: true },
-//   order_id: { type: String, required: true },
-//   destination: { type: String, required: true },
-//   status: { type: String, required: true },
-//   estimated_delivery: { type: String, required: true }, // Storing as String, consider changing to Date for date operations
-// });
-
-// module.exports = mongoose.model('Logistics', logisticsSchema, 'Logistics'); // 'Logistics' is the collection name in MongoDB
-
-
 const mongoose = require('mongoose');
 
 const logisticsSchema = new mongoose.Schema({
-  shipment_id: { type: String, required: true, unique: true },
-  order_id: { type: String, required: true }, // Link to the order ID
-  estimated_delivery: { type: String, required: true }, // Storing as a string for simplicity
-  destination: { type: String, required: true }, // Destination as per order
-  status: { type: String, required: true }, // Status as per order
-});
+  shipment_id: { type: String, required: true, unique: true }, // Shipment ID
+  order_id: { type: String, required: true }, // Order ID
+  product_name: { type: String, required: true }, // Product Name
+  quantity: { type: Number, required: true }, // Quantity
+  source: { type: String, required: true }, // Source
+  destination: { type: String, required: true }, // Destination
+  status: { type: String, required: true, enum: ['Processing', 'Shipped', 'Delivered'] }, // Status (options)
+  estimated_delivery: { type: String, required: true }, // Estimated Delivery Date (as a string in DD-MM-YYYY format)
+}, { timestamps: true }); // Add timestamps for createdAt and updatedAt
 
-module.exports = mongoose.model('Logistics', logisticsSchema, 'Logistics'); // Collection name: Logistics
-
+module.exports = mongoose.model('Logistics', logisticsSchema, 'Logistics');

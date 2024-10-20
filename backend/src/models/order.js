@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   order_id: { type: String, required: true, unique: true },
-  customer: { type: String, required: true },
-  date: { type: String, required: true }, // Changed date to String
+  product: { type: String, required: true, enum: [
+    "cleanser", "toner", "sunscreen", "moisturizer", "face mask", "face cream", 
+    "lip oils", "lip balms", "hair serum", "hair shampoo", "hair conditioner", 
+    "hair oil", "body lotion", "body wash", "body exfoliator"] 
+  }, // Product should be one of these.
+  date: { type: String, required: true }, // Date as string
   status: { type: String, required: true },
-  total: { type: mongoose.Types.Decimal128, required: true }, // Changed total to Decimal128 (double)
-  destination: { type: String, required: true }, // Added destination field
+  quantity: { type: Number, required: true }, // Added quantity
+  destination: { type: String, required: true }, // Kept destination
 });
 
 module.exports = mongoose.model('Order', orderSchema, 'Orders');
