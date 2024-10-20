@@ -1,11 +1,17 @@
 const mongoose = require('mongoose');
-
 const inventorySchema = new mongoose.Schema({
-  product_id: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  category: { type: String, required: true },
-  in_stock: { type: Number, required: true },
-  reorder_level: { type: Number, required: true },
-});
+  plant_id: { type: String, required: true, unique: true },
+  plant_name: { type: String, required: true },
+  products: [
+    {
+      category: { type: String, required: true },
+      product_name: { type: String, required: true },
+      stock: { type: Number, required: true },
+      reorder_level: { type: Number, required: true }
+    }
+  ]
+}, { collection: 'Inventory' });  // Specify the collection name
 
-module.exports = mongoose.model('Inventory', inventorySchema, 'Inventory'); // 'Inventory' is the collection name in MongoDB
+const Inventory = mongoose.model('Inventory', inventorySchema);
+
+module.exports = mongoose.model('Inventory', inventorySchema);
