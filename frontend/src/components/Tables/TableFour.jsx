@@ -38,7 +38,6 @@ const Logistics = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Logistics</h2>
 
       {/* Logistics Table */}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>

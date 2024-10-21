@@ -60,7 +60,7 @@ const Orders = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Orders</h2>
+      
       
       {/* Order Creation Form */}
       <form onSubmit={handleCreateOrder} style={formStyle}>
@@ -121,7 +121,7 @@ const Orders = () => {
           />
         </div>
 
-        <button type="submit" style={buttonStyle}>Add Order</button>
+        <button type="submit" style={buttonStyle}><b>Add Order</b></button>
       </form>
 
       {/* Order Table */}
@@ -204,8 +204,8 @@ const inputStyle = {
 
 const buttonStyle = {
   padding: '10px 15px',
-  backgroundColor: 'green',
-  color: '#fff',
+  backgroundColor: '#89ff76',
+  color: '#000',
   border: 'none',
   borderRadius: '4px',
   cursor: 'pointer',

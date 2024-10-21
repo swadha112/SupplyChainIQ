@@ -34,7 +34,7 @@ const Inventory = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Plant-wise Inventory</h2>
+
 
       {/* Loop through each plant in the inventory */}
       {Array.isArray(inventory) && inventory.length > 0 ? (

@@ -51,7 +51,7 @@ const Suppliers = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>Suppliers</h2>
+      
 
       {productName && (
         <div className="popup-message" style={{ marginBottom: '20px', color: 'green', fontWeight: 'bold' }}>
@@ -81,7 +81,7 @@ const Suppliers = () => {
               <td>
                 <button 
                   onClick={() => { setSelectedSupplier(supplier); setShowForm(true); }}
-                  style={{ padding: '5px 10px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                  style={{ padding: '5px 10px', backgroundColor: '#89ff76', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                 >
                   Send Email
                 </button>
@@ -166,8 +166,8 @@ const inputStyle = {
 
 const submitButtonStyle = {
   padding: '10px 15px',
-  backgroundColor: '#4CAF50',
-  color: 'white',
+  backgroundColor: '#89ff76',
+  color: 'black',
   border: 'none',
   borderRadius: '4px',
   cursor: 'pointer',
