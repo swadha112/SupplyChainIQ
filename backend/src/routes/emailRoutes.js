@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 // Email sending logic
 router.post('/send-email', async (req, res) => {
@@ -9,17 +10,19 @@ router.post('/send-email', async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'your-email@gmail.com',  // Your email address
-      pass: 'your-email-password',   // Your email password
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
+  
 
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: process.env.EMAIL_USER,
     to: supplierEmail,
     subject: `Reorder Request for ${productName}`,
     text: `Hello, we would like to reorder ${quantity} units of ${productName} to be shipped to ${shipmentPort}.`,
   };
+  
 
   try {
     await transporter.sendMail(mailOptions);
