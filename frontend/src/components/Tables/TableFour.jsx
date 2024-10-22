@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import L from 'leaflet'; // Import Leaflet for map functionality
+import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS
 
 const Logistics = () => {
   const [logistics, setLogistics] = useState([]);
+  const [map, setMap] = useState(null);
+  const [selectedShipment, setSelectedShipment] = useState(null);
   const [newStatus, setNewStatus] = useState('');
 
   useEffect(() => {
@@ -36,8 +40,46 @@ const Logistics = () => {
     }
   };
 
+  const handleTrackOrder = (shipment) => {
+    if (shipment.sourceLat && shipment.sourceLng && shipment.destinationLat && shipment.destinationLng) {
+      setSelectedShipment(shipment);
+
+      if (map) {
+        map.remove(); // Remove the previous map before creating a new one
+      }
+
+      // Create a new map centered at the source location
+      const newMap = L.map('map').setView([shipment.sourceLat, shipment.sourceLng], 6);
+
+      // Set up the OSM tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+      }).addTo(newMap);
+
+      // Add markers for source and destination
+      const sourceMarker = L.marker([shipment.sourceLat, shipment.sourceLng]).addTo(newMap);
+      const destinationMarker = L.marker([shipment.destinationLat, shipment.destinationLng]).addTo(newMap);
+
+      // Add popup information to markers
+      sourceMarker.bindPopup('Source Location').openPopup();
+      destinationMarker.bindPopup('Destination Location');
+
+      // Draw a route between source and destination
+      const route = L.polyline([[shipment.sourceLat, shipment.sourceLng], [shipment.destinationLat, shipment.destinationLng]], { color: 'blue' }).addTo(newMap);
+
+      // Fit the map bounds to show the full route
+      newMap.fitBounds(route.getBounds());
+
+      // Save the map instance to the state
+      setMap(newMap);
+    } else {
+      alert("Latitude and Longitude are missing for this shipment.");
+    }
+  };
+
   return (
     <div style={{ padding: '20px' }}>
+      <h2>Logistics</h2>
 
       {/* Logistics Table */}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
@@ -62,7 +104,7 @@ const Logistics = () => {
               <td>{shipment.product_name}</td> {/* Added Product Name */}
               <td>{shipment.quantity}</td> {/* Added Quantity */}
               <td>{shipment.source}</td> {/* Added Source */}
-              <td>{shipment.destination}</td>
+              <td>{shipment.destination}</td> {/* Added Destination */}
               <td>
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                   shipment.status === 'In Transit' ? 'bg-green-100 text-green-800' :
@@ -76,9 +118,11 @@ const Logistics = () => {
               <td>{shipment.estimated_delivery}</td>
               <td>
                 <div className="flex space-x-2">
-                  <button onClick={() => alert(`Tracking Shipment: ${shipment.shipment_id}`)}>
+                  {/* Track Order Button */}
+                  <button onClick={() => handleTrackOrder(shipment)}>
                     Track Order
                   </button>
+                  {/* Status Update Dropdown */}
                   <select
                     onChange={(e) => setNewStatus(e.target.value)}
                     value={newStatus}
@@ -96,6 +140,11 @@ const Logistics = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Map Container */}
+      {selectedShipment && (
+        <div id="map" style={{ height: '400px', marginTop: '20px' }}></div>
+      )}
     </div>
   );
 };

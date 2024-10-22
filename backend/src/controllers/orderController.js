@@ -1,14 +1,14 @@
 const Order = require('../models/order');
 const Logistics = require('../models/logistics');
-const { getNearestSource } = require('../services/geoService'); // Import the service for geocoding and distance
+const { geocodeDestination, getNearestSource } = require('../services/geoService'); // Import the service for geocoding and distance
 
 // Plant sources with lat/lng coordinates
 const plantSources = [
-  { name: 'Plant A', location: { lat: 40.7128, lng: -74.0060 } }, // New York
-  { name: 'Plant B', location: { lat: 34.0522, lng: -118.2437 } }, // Los Angeles
-  { name: 'Plant C', location: { lat: 41.8781, lng: -87.6298 } },  // Chicago
-  { name: 'Plant D', location: { lat: 29.7604, lng: -95.3698 } },  // Houston
-  { name: 'Plant E', location: { lat: 33.4484, lng: -112.0740 } }  // Phoenix
+  { name: 'New York', location: { lat: 40.7128, lng: -74.0060 } }, // New York
+  { name: 'Los Angeles', location: { lat: 34.0522, lng: -118.2437 } }, // Los Angeles
+  { name: 'Chicago', location: { lat: 41.8781, lng: -87.6298 } },  // Chicago
+  { name: 'Houston', location: { lat: 29.7604, lng: -95.3698 } },  // Houston
+  { name: 'Phoenix', location: { lat: 33.4484, lng: -112.0740 } }  // Phoenix
 ];
 
 // Function to generate the next sequential order ID
@@ -42,14 +42,18 @@ function formatDate(date) {
 // Create a new order and link it with logistics
 const createOrder = async (req, res, next) => {
   try {
-    const { customer, date, product, quantity, destination } = req.body;
+    const {date, product, quantity, destination } = req.body;
 
-    // Generate the next sequential order ID
+    // Step 1: Geocode the destination (get lat/lng)
+    const destinationCoords = await geocodeDestination(destination);
+
+    // Step 2: Calculate nearest source based on geocoded destination coordinates
+    const nearestSource = getNearestSource(destinationCoords, plantSources);
+
+    // Step 3: Generate the next sequential order ID
     const newOrderId = await getNextOrderId();
 
-    // Calculate nearest source based on destination name
-    const nearestSource = await getNearestSource(destination, plantSources); // Now passing destination name
-
+  
     // Create new order with default status "Processing"
     const newOrder = await Order.create({
       order_id: newOrderId,
@@ -71,10 +75,14 @@ const createOrder = async (req, res, next) => {
     await Logistics.create({
       shipment_id: newShipmentId,
       order_id: newOrderId,
-      product,
+      product_name: product,
       quantity,
       source: nearestSource.name, // Assign the nearest source
+      sourceLat:  nearestSource.location.lat,
+      sourceLng: nearestSource.location.lng,
       destination,
+      destinationLat: destinationCoords.lat,
+      destinationLng: destinationCoords.lng,
       status: 'Processing',
       estimated_delivery: formattedEstimatedDelivery,
     });

@@ -5,6 +5,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
   
   // List of products
   const products = [
@@ -49,9 +50,11 @@ const Orders = () => {
       // Re-fetch orders after adding a new one
       const updatedOrders = await axios.get('http://localhost:5050/api/orders');
       setOrders(updatedOrders.data);
+      setSuccessMessage('Order added successfully!');
       setNewOrder({ product: products[0], quantity: 1, date: '', destination: '' });
     } catch (err) {
       setError('Error creating order');
+      setSuccessMessage('');
     }
   };
 
@@ -61,6 +64,7 @@ const Orders = () => {
   return (
     <div style={{ padding: '20px' }}>
       
+      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
       
       {/* Order Creation Form */}
       <form onSubmit={handleCreateOrder} style={formStyle}>
@@ -96,9 +100,9 @@ const Orders = () => {
         </div>
 
         <div style={inputContainerStyle}>
-          <label style={labelStyle}>Date (DD-MM-YYYY)</label>
+          <label style={labelStyle}>Date</label>
           <input
-            type="text"
+            type="date"
             name="date"
             placeholder="Date"
             value={newOrder.date}

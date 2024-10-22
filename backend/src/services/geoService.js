@@ -1,56 +1,68 @@
-// services/geoService.js
-
 const axios = require('axios');
 
-const googleMapsApiKey = 'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual API key
-
-// Function to get the coordinates (lat, lng) of a destination by name
-async function getCoordinates(destinationName) {
-  const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destinationName)}&key=${googleMapsApiKey}`;
-  
+// Function to geocode a destination using Nominatim (OpenStreetMap)
+const geocodeDestination = async (destination) => {
   try {
-    const response = await axios.get(geocodingUrl);
-    const location = response.data.results[0].geometry.location; // Extract the lat and lng
+    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+      params: {
+        q: destination,
+        format: 'json',
+        limit: 1
+      }
+    });
 
-    return { lat: location.lat, lng: location.lng };
-  } catch (error) {
-    console.error('Error fetching coordinates:', error);
-    throw new Error('Failed to fetch coordinates from Google Maps Geocoding API');
+    if (response.data.length > 0) {
+      const { lat, lon } = response.data[0];
+      return { lat: parseFloat(lat), lng: parseFloat(lon) };
+    } else {
+      throw new Error('No location found for the provided destination');
+    }
+  } catch (err) {
+    throw new Error('Error fetching geocode data');
   }
-}
-
-// Function to get the nearest source based on destination name
-async function getNearestSource(destinationName, plantSources) {
-  try {
-    // Get destination coordinates using Geocoding API
-    const destinationCoordinates = await getCoordinates(destinationName);
-    const destinationString = `${destinationCoordinates.lat},${destinationCoordinates.lng}`;
-
-    // Prepare source locations for the request
-    const sourcesString = plantSources.map(source => `${source.location.lat},${source.location.lng}`).join('|');
-
-    // Google Maps Distance Matrix API endpoint
-    const apiUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${sourcesString}&destinations=${destinationString}&key=${googleMapsApiKey}`;
-
-    const response = await axios.get(apiUrl);
-
-    // Find the nearest source based on the shortest distance
-    const distances = response.data.rows.map((row, index) => ({
-      source: plantSources[index],
-      distance: row.elements[0].distance.value // Distance in meters
-    }));
-
-    // Sort the sources by distance (ascending)
-    const nearestSource = distances.sort((a, b) => a.distance - b.distance)[0].source;
-
-    return nearestSource;
-  } catch (error) {
-    console.error('Error fetching distances:', error);
-    throw new Error('Failed to fetch distances from Google Maps API');
-  }
-}
-
-module.exports = {
-  getCoordinates,
-  getNearestSource,
 };
+
+// Haversine formula to calculate distance between two points (lat, lng) on the Earth
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Radius of Earth in kilometers
+  const dLat = degreesToRadians(lat2 - lat1);
+  const dLon = degreesToRadians(lon2 - lon1);
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(degreesToRadians(lat1)) * Math.cos(degreesToRadians(lat2)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in kilometers
+  return distance;
+};
+
+// Convert degrees to radians
+const degreesToRadians = (degrees) => {
+  return degrees * (Math.PI / 180);
+};
+
+// Function to get the nearest source based on the destination coordinates
+const getNearestSource = (destination, plantSources) => {
+  let nearestSource = null;
+  let shortestDistance = Infinity;
+
+  // Iterate through each plant and calculate the distance to the destination
+  plantSources.forEach((plant) => {
+    const distance = calculateDistance(
+      plant.location.lat,
+      plant.location.lng,
+      destination.lat,
+      destination.lng
+    );
+
+    // If the current plant is closer, update the nearest source
+    if (distance < shortestDistance) {
+      shortestDistance = distance;
+      nearestSource = plant;
+    }
+  });
+
+  return nearestSource;
+};
+
+module.exports = { geocodeDestination, getNearestSource };
