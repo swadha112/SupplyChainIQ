@@ -1,17 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
 import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
 import MapOne from '../../components/Maps/MapOne';
 import TableOne from '../../components/Tables/TableOne.jsx';
 
 const ECommerce = () => {
+  const [inventoryData, setInventoryData] = useState([]);
+  const [ordersData, setOrdersData] = useState([]);
+  const [totalInventory, setTotalInventory] = useState(0);
+  const [previousInventory, setPreviousInventory] = useState(0);
+  const [pendingOrders, setPendingOrders] = useState(0);
+  const [activeShipments, setActiveShipments] = useState(0);
+
+  useEffect(() => {
+    // Fetch inventory and orders data
+    const fetchData = async () => {
+      try {
+        // Fetch inventory data from API
+        const inventoryResponse = await axios.get('http://localhost:5050/api/inventory');
+        setInventoryData(inventoryResponse.data);
+
+        // Fetch orders data from API
+        const ordersResponse = await axios.get('http://localhost:5050/api/orders');
+        setOrdersData(ordersResponse.data);
+
+        // Calculate total inventory (sum of stock across all products and plants)
+        const totalInventoryValue = inventoryResponse.data.reduce((total, plant) => {
+          return total + plant.products.reduce((sum, product) => sum + product.stock, 0);
+        }, 0);
+        setTotalInventory(totalInventoryValue);
+
+        // Calculate percent increase/decrease in total inventory
+        const inventoryChange = previousInventory !== 0 ? ((totalInventoryValue - previousInventory) / previousInventory) * 100 : 0;
+        setPreviousInventory(totalInventoryValue); // Store current value as the new previous for future calculations
+
+        // Calculate pending orders (orders with status 'Processing')
+        const pendingOrdersCount = ordersResponse.data.filter(order => order.status === 'Processing').length;
+        setPendingOrders(pendingOrdersCount);
+
+        // Calculate active shipments (orders with status 'Shipped')
+        const activeShipmentsCount = ordersResponse.data.filter(order => order.status === 'Shipped').length;
+        setActiveShipments(activeShipmentsCount);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [previousInventory]);
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total Inventory" total="1320" rate="0.43%" levelUp>
+        {/* Total Inventory Card */}
+        <CardDataStats title="Total Inventory" total={totalInventory} rate={`${previousInventory !== 0 ? ((totalInventory - previousInventory) / previousInventory * 100).toFixed(2) : 0}%`} levelUp={totalInventory >= previousInventory}>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -30,7 +75,9 @@ const ECommerce = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Pending Orders" total="20" rate="+2" levelUp>
+
+        {/* Pending Orders Card */}
+        <CardDataStats title="Pending Orders" total={pendingOrders} rate={pendingOrders} levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -53,7 +100,9 @@ const ECommerce = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Active Shipments" total="12" rate="3 Arriving" levelUp>
+
+        {/* Active Shipments Card */}
+        <CardDataStats title="Active Shipments" total={activeShipments} rate={`${activeShipments} Arriving`} levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -62,7 +111,7 @@ const ECommerce = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
+             <path
               d="M21.1063 18.0469L19.3875 3.23126C19.2157 1.71876 17.9438 0.584381 16.3969 0.584381H5.56878C4.05628 0.584381 2.78441 1.71876 2.57816 3.23126L0.859406 18.0469C0.756281 18.9063 1.03128 19.7313 1.61566 20.3844C2.20003 21.0375 2.99066 21.3813 3.85003 21.3813H18.1157C18.975 21.3813 19.8 21.0031 20.35 20.3844C20.9 19.7656 21.2094 18.9063 21.1063 18.0469ZM19.2157 19.3531C18.9407 19.6625 18.5625 19.8344 18.15 19.8344H3.85003C3.43753 19.8344 3.05941 19.6625 2.78441 19.3531C2.50941 19.0438 2.37191 18.6313 2.44066 18.2188L4.12503 3.43751C4.19378 2.71563 4.81253 2.16563 5.56878 2.16563H16.4313C17.1532 2.16563 17.7719 2.71563 17.875 3.43751L19.5938 18.2531C19.6282 18.6656 19.4907 19.0438 19.2157 19.3531Z"
               fill=""
             />
@@ -72,6 +121,8 @@ const ECommerce = () => {
             />
           </svg>
         </CardDataStats>
+
+        {/* Supplier Performance Card (dummy example) */}
         <CardDataStats title="Supplier Performance" total="92%" rate="0.95%" levelDown>
           <svg
             className="fill-green dark:fill-white"
@@ -105,7 +156,6 @@ const ECommerce = () => {
         <div className="col-span-12 xl:col-span-8">
           <TableOne />
         </div>
-        {/* <ChatCard /> */}
       </div>
     </>
   );
