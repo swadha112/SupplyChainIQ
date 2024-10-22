@@ -1,6 +1,7 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import axios from 'axios';
 
 const options: ApexOptions = {
   legend: {
@@ -21,7 +22,6 @@ const options: ApexOptions = {
       left: 0,
       opacity: 0.1,
     },
-
     toolbar: {
       show: false,
     },
@@ -48,10 +48,6 @@ const options: ApexOptions = {
     width: [2, 2],
     curve: 'straight',
   },
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
   grid: {
     xaxis: {
       lines: {
@@ -83,20 +79,7 @@ const options: ApexOptions = {
   },
   xaxis: {
     type: 'category',
-    categories: [
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-    ],
+    categories: [], // This will be updated dynamically
     axisBorder: {
       show: false,
     },
@@ -105,11 +88,6 @@ const options: ApexOptions = {
     },
   },
   yaxis: {
-    title: {
-      style: {
-        fontSize: '0px',
-      },
-    },
     min: 0,
     max: 100,
   },
@@ -120,76 +98,122 @@ interface ChartOneState {
     name: string;
     data: number[];
   }[];
+  categories: string[];
 }
 
 const ChartOne: React.FC = () => {
   const [state, setState] = useState<ChartOneState>({
     series: [
       {
-        name: 'Product One',
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+        name: 'In Stock',
+        data: [],
       },
-
       {
-        name: 'Product Two',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        name: 'Reorder Level',
+        data: [],
       },
     ],
+    categories: [],
   });
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
+  const [selectedPlant, setSelectedPlant] = useState('New York');
+  const [plants] = useState(['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix']);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchInventoryData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5050/api/inventory');
+        const inventory = response.data;
+
+        const plantData = inventory.find((plant: any) => plant.plant_name === selectedPlant);
+
+        if (plantData && plantData.products) {
+          const productNames = plantData.products.map((product: any) => product.product_name);
+          const stockLevels = plantData.products.map((product: any) => product.stock);
+          const reorderLevels = plantData.products.map((product: any) => product.reorder_level);
+
+          setState({
+            series: [
+              { name: 'In Stock', data: stockLevels },
+              { name: 'Reorder Level', data: reorderLevels },
+            ],
+            categories: productNames,
+          });
+        } else {
+          console.warn('No products found for selected plant');
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching inventory data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchInventoryData();
+  }, [selectedPlant]);
+
+  const handlePlantChange = (plant: string) => {
+    setSelectedPlant(plant);
   };
-  handleReset;
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full flex-wrap gap-3 sm:gap-5">
-          <div className="flex min-w-47.5">
+        {/* Labels for In Stock and Reorder */}
+        <div className="flex w-full flex-wrap gap-3 sm:gap-3">
+          <div className="flex min-w-[120px]">
             <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
               <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
             </span>
             <div className="w-full">
-              <p className="font-semibold text-primary">Total Revenue</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+              <p className="font-semibold text-primary">In Stock</p>
             </div>
           </div>
-          <div className="flex min-w-47.5">
+          <div className="flex min-w-[220px]">
             <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-brightgreen">
               <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-brightgreen"></span>
             </span>
             <div className="w-full">
-              <p className="font-semibold text-brightgreen">Total Sales</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+              <p className="font-semibold text-brightgreen">Reorder Level</p>
             </div>
           </div>
         </div>
-        <div className="flex w-full max-w-45 justify-end">
+
+        {/* Plant selection buttons */}
+        <div className="flex w-full mt-10 max-w-45 justify-end">
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Day
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Week
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Month
-            </button>
+            {plants.map((plant) => (
+              <button
+                key={plant}
+                onClick={() => handlePlantChange(plant)}
+                className={`rounded py-2 px-4 text-xs font-medium w-28 text-center mx-1 transition-colors ${
+                  selectedPlant === plant
+                    ? 'bg-primary text-white'
+                    : 'bg-white text-black hover:bg-primary hover:text-white'
+                } shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-green dark:hover:text-black`}
+              >
+                {plant}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
+      {/* Chart rendering */}
       <div>
         <div id="chartOne" className="-ml-5">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="area"
-            height={350}
-          />
+          {!loading ? (
+            <ReactApexChart
+              options={{ ...options, xaxis: { ...options.xaxis, categories: state.categories } }}
+              series={state.series}
+              type="line"
+              height={350}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </div>
     </div>
