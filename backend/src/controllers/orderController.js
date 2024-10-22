@@ -1,5 +1,6 @@
 const Order = require('../models/order');
 const Logistics = require('../models/logistics');
+const Inventory = require('../models/inventory'); // Import the Inventory model
 const { geocodeDestination, getNearestSource } = require('../services/geoService'); // Import the service for geocoding and distance
 
 // Plant sources with lat/lng coordinates
@@ -53,7 +54,6 @@ const createOrder = async (req, res, next) => {
     // Step 3: Generate the next sequential order ID
     const newOrderId = await getNextOrderId();
 
-  
     // Create new order with default status "Processing"
     const newOrder = await Order.create({
       order_id: newOrderId,
@@ -87,9 +87,26 @@ const createOrder = async (req, res, next) => {
       estimated_delivery: formattedEstimatedDelivery,
     });
 
-    res.status(201).json({ message: 'Order and Logistics created successfully with optimized source!', order: newOrder });
+    // Step 4: Update Inventory: Decrease stock of the product at the source plant
+    const inventoryUpdate = await Inventory.findOneAndUpdate(
+      { plant_name: nearestSource.name, 'products.product_name': product }, 
+      { $inc: { 'products.$.stock': -quantity } }, // Decrease the stock
+      { new: true }
+    );
+
+    if (!inventoryUpdate) {
+      return res.status(404).send(`Inventory not found for ${product} at ${nearestSource.name}`);
+    }
+
+    res.status(201).json({ 
+      message: 'Order and Logistics created successfully with optimized source!',
+      order: newOrder,
+      logistics: newShipmentId,
+      updatedInventory: inventoryUpdate
+    });
+
   } catch (err) {
-    next(err);
+    next(err); // Handle errors
   }
 };
 
