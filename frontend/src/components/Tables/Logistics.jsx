@@ -77,36 +77,55 @@ const Logistics = () => {
     }
   };
 
+  const tableStyle = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    minWidth: '900px', // Ensure table doesn't get too small on small screens
+  };
+  
+  const thStyle = {
+    padding: '5px 7px', // Adjust the padding for more space between columns in the header
+    textAlign: 'left',
+    borderBottom: '1px solid #ddd',
+  };
+  
+  const tdStyle = {
+    padding: '5px 7px', // Adjust the padding for more space between columns in the body
+    textAlign: 'left',
+    borderBottom: '1px solid #ddd',
+  };
+  
+  // Inside the JSX
   return (
     <div style={containerStyle}>
       <h2>Logistics</h2>
-
+  
       {/* Logistics Table */}
       <div style={tableContainerStyle}>
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th>Shipment ID</th>
-              <th>Order ID</th>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Source</th>
-              <th>Destination</th>
-              <th>Status</th>
-              <th>Est. Delivery</th>
-              <th>Actions</th>
+              <th style={thStyle}>Shipment ID</th>
+              <th style={thStyle}>Order ID</th>
+              <th style={thStyle}>Product</th>
+              <th style={thStyle}>Quantity</th>
+              <th style={thStyle}>Source</th>
+              <th style={thStyle}>Destination</th>
+              <th style={thStyle}>Status</th>
+              <th style={thStyle}>Est. Delivery</th>
+              <th style={thStyle}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {logistics.map((shipment) => (
-              <tr key={shipment.shipment_id} style={{ borderBottom: '1px solid #ddd' }}>
-                <td>{shipment.shipment_id}</td>
-                <td>{shipment.order_id}</td>
-                <td>{shipment.product_name}</td>
-                <td>{shipment.quantity}</td>
-                <td>{shipment.source}</td>
-                <td>{shipment.destination}</td>
-                <td>
+              <tr key={shipment.shipment_id} style={tdStyle}>
+                <td style={tdStyle}>{shipment.shipment_id}</td>
+                <td style={tdStyle}>{shipment.order_id}</td>
+                <td style={tdStyle}>{shipment.product_name}</td>
+                <td style={tdStyle}>{shipment.quantity}</td>
+                <td style={tdStyle}>{shipment.source}</td>
+                <td style={tdStyle}>{shipment.destination}</td>
+                <td style={tdStyle}>
                   <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                     shipment.status === 'In Transit' ? 'bg-green-100 text-green-800' :
                     shipment.status === 'Shipped' ? 'bg-yellow-100 text-yellow-800' :
@@ -116,8 +135,8 @@ const Logistics = () => {
                     {shipment.status}
                   </span>
                 </td>
-                <td>{shipment.estimated_delivery}</td>
-                <td>
+                <td style={tdStyle}>{shipment.estimated_delivery}</td>
+                <td style={tdStyle}>
                   <div style={actionContainerStyle}>
                     {/* Track Order Button */}
                     <button onClick={() => handleTrackOrder(shipment)} style={buttonStyle}>
@@ -134,7 +153,7 @@ const Logistics = () => {
                       <option value="Shipped">Shipped</option>
                       <option value="Delivered">Delivered</option>
                     </select>
-                    <button onClick={() => handleStatusUpdate(shipment.shipment_id)} style={buttonStyle}>Save</button>
+                    <button onClick={() => handleStatusUpdate(shipment.shipment_id)} style={buttonStyle} >Save</button>
                   </div>
                 </td>
               </tr>
@@ -142,13 +161,14 @@ const Logistics = () => {
           </tbody>
         </table>
       </div>
-
+  
       {/* Map Container */}
       {selectedShipment && (
         <div id="map" style={mapStyle}></div>
       )}
     </div>
   );
+  
 };
 
 // Styles for responsiveness
@@ -209,6 +229,7 @@ const mediaQueries = `
     }
     ${buttonStyle} {
       margin-bottom: 10px;
+      margin-left:4px;
     }
   }
 `;
