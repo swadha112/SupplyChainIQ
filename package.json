@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "web3": "^4.14.0"
   }
 }

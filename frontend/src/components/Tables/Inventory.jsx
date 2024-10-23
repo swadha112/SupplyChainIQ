@@ -38,6 +38,7 @@ const Inventory = () => {
   const [forecast, setForecast] = useState([]); // Track forecast data
   const [itemWiseForecast, setItemWiseForecast] = useState(null);
   const [loadingForecast, setLoadingForecast] = useState(false); // Track forecast request
+  const [showForecast, setShowForecast] = useState(false); // Track whether to show forecast
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,9 +79,9 @@ const Inventory = () => {
           periods: 12, //forecast ffor next 12 periods
         },
       );
-      //setForecast(response.data); // Set the forecast data returned from the backend
       setForecast(response.data.timeSeriesForecast); // Set the time-series forecast data returned from the backend
       setItemWiseForecast(response.data.itemWiseForecast); // Set the item-wise forecast data returned from the backend
+      setShowForecast(true); // Show forecast section after fetching data
     } catch (err) {
       console.error('Error fetching forecast:', err);
       setForecast([]);
@@ -144,7 +145,7 @@ const Inventory = () => {
         data: itemWiseForecast
           ? itemWiseForecast.map((item) => item.forecast)
           : [], // Y-axis data (forecasted values)
-        backgroundColor: 'rgba(153,102,255,0.4)',
+        backgroundColor: 'rgba(72,200,75,0.5)',
         borderColor: 'rgba(153,102,255,1)',
       },
     ],
@@ -155,7 +156,7 @@ const Inventory = () => {
       x: {
         title: {
           display: true,
-          text: 'Date',
+          text: 'Dates',
         },
       },
       y: {
@@ -204,54 +205,6 @@ const Inventory = () => {
               {plant.plant_name} Inventory
             </h3>
 
-            {/* Forecast Button */}
-            <button
-              onClick={handleForecastClick}
-              style={{ ...buttonStyle, marginBottom: '20px' }}
-              disabled={loadingForecast}
-            >
-              {loadingForecast ? 'Predicting...' : 'Forecast Inventory'}
-            </button>
-
-            {/* Display Forecast Chart
-            {forecast.length>0 && (
-              <div style={{ marginBottom: '20px' }}>
-                <h4>Forecasted Inventory Levels for {activePlant}:</h4>
-                <Line id="forecastChart" data={chartData} options={chartOptions} />
-                <button style={buttonStyle} onClick={handleDownloadPDF}>Download Forecast as PDF</button>
-              </div>
-            )} */}
-
-            {/* Display Time Series Forecast Chart */}
-            {forecast && (
-              <div style={{ marginBottom: '20px' }}>
-                <h4>Time Series Forecast for {activePlant}:</h4>
-                <Line
-                  id="forecastChart1"
-                  data={chartDataTimeSeries}
-                  options={chartOptions}
-                />
-              </div>
-            )}
-
-            <div>
-              <button style={buttonStyle} onClick={handleDownloadPDF}>
-                Download Forecast as PDF
-              </button>{' '}
-            </div>
-
-            {/* Display Item-wise Forecast Chart */}
-            {itemWiseForecast && (
-              <div style={{ marginBottom: '20px' }}>
-                <h4>Item-wise Forecast for {activePlant}:</h4>
-                <Bar
-                  id="forecastChart2"
-                  data={chartDataItemWise}
-                  options={chartOptions}
-                />
-              </div>
-            )}
-
             <table
               style={{
                 width: '100%',
@@ -295,7 +248,7 @@ const Inventory = () => {
                       </td>
                       <td style={cellStyle}>{product.reorder_level}</td>
                       <td style={cellStyle}>
-                        {product.stock <= product.reorder_level && (
+                      {product.stock <= product.reorder_level && (
                           <button
                             onClick={() =>
                               handleReorderClick(
@@ -313,6 +266,53 @@ const Inventory = () => {
                   ))}
               </tbody>
             </table>
+
+            {/* Forecast Button below the table */}
+            <div style={{ marginTop: '20px' }}>
+              <button
+                onClick={handleForecastClick}
+                style={buttonStyle}
+                disabled={loadingForecast}
+              >
+                {loadingForecast ? 'Predicting...' : 'Forecast Inventory'}
+              </button>
+            </div>
+
+            {/* Conditionally render forecast charts only when the button is clicked */}
+            {showForecast && (
+              <>
+                {/* Display Time Series Forecast Chart */}
+                {forecast && (
+                  <div style={{ marginBottom: '20px' }}>
+                    <h4>Time Series Forecast for {activePlant}:</h4>
+                    <Line
+                      id="forecastChart1"
+                      data={chartDataTimeSeries}
+                      options={chartOptions}
+                    />
+                  </div>
+                )}
+
+                {/* Display Item-wise Forecast Chart */}
+                {itemWiseForecast && (
+                  <div style={{ marginBottom: '20px' }}>
+                    <h4>Item-wise Forecast for {activePlant}:</h4>
+                    <Bar
+                      id="forecastChart2"
+                      data={chartDataItemWise}
+                      options={chartOptions}
+                    />
+                  </div>
+                )}
+
+                {/* Download Forecast as PDF Button */}
+                <div>
+                  <button style={buttonStyle} onClick={handleDownloadPDF}>
+                    Download Forecast as PDF
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         ) : null,
       )}
@@ -346,3 +346,4 @@ const buttonStyle = {
 };
 
 export default Inventory;
+
