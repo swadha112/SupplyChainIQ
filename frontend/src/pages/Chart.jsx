@@ -1,6 +1,6 @@
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../components/Breadcrumbs/Breadcrumb.jsx';
 
-import TableFour from '../components/Tables/TableFour.jsx';
+import TableFour from '../components/Tables/Logistics.jsx';
 
 const Chart = () => {
   return (

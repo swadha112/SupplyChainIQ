@@ -5,7 +5,7 @@ import ChartOne from '../../components/Charts/ChartOne.jsx';
 import ChartThree from '../../components/Charts/ChartThree.jsx';
 import ChartTwo from '../../components/Charts/ChartTwo.jsx';
 import MapOne from '../../components/Maps/MapOne.jsx';
-import TableOne from '../../components/Tables/TableOne.jsx';
+import TableOne from '../../components/Tables/Orders.jsx';
 
 const ECommerce = () => {
   const [inventoryData, setInventoryData] = useState([]);

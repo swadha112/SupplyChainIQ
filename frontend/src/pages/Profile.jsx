@@ -1,6 +1,6 @@
-import Breadcrumb from '../components/Breadcrumbs/Breadcrumb.tsx';
+import Breadcrumb from '../components/Breadcrumbs/Breadcrumb.jsx';
 
-import TableTwo from '../components/Tables/TableTwo.jsx';
+import TableTwo from '../components/Tables/Suppliers.jsx';
 
 
 const Profile = () => {

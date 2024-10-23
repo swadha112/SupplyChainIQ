@@ -1,6 +1,6 @@
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.jsx';
 
-import TableThree from '../../components/Tables/TableThree.jsx';
+import TableThree from '../../components/Tables/Inventory.jsx';
 
 const FormElements = () => {
   return (
