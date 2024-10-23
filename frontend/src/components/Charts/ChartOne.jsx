@@ -1,9 +1,8 @@
-import { ApexOptions } from 'apexcharts';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 
-const options: ApexOptions = {
+const options = {
   legend: {
     show: false,
     position: 'top',
@@ -93,16 +92,8 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartOneState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-  categories: string[];
-}
-
-const ChartOne: React.FC = () => {
-  const [state, setState] = useState<ChartOneState>({
+const ChartOne = () => {
+  const [state, setState] = useState({
     series: [
       {
         name: 'In Stock',
@@ -126,12 +117,12 @@ const ChartOne: React.FC = () => {
         const response = await axios.get('http://localhost:5050/api/inventory');
         const inventory = response.data;
 
-        const plantData = inventory.find((plant: any) => plant.plant_name === selectedPlant);
+        const plantData = inventory.find((plant) => plant.plant_name === selectedPlant);
 
         if (plantData && plantData.products) {
-          const productNames = plantData.products.map((product: any) => product.product_name);
-          const stockLevels = plantData.products.map((product: any) => product.stock);
-          const reorderLevels = plantData.products.map((product: any) => product.reorder_level);
+          const productNames = plantData.products.map((product) => product.product_name);
+          const stockLevels = plantData.products.map((product) => product.stock);
+          const reorderLevels = plantData.products.map((product) => product.reorder_level);
 
           setState({
             series: [
@@ -154,14 +145,13 @@ const ChartOne: React.FC = () => {
     fetchInventoryData();
   }, [selectedPlant]);
 
-  const handlePlantChange = (plant: string) => {
+  const handlePlantChange = (plant) => {
     setSelectedPlant(plant);
   };
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        {/* Labels for In Stock and Reorder */}
         <div className="flex w-full flex-wrap gap-3 sm:gap-3">
           <div className="flex min-w-[120px]">
             <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
@@ -181,7 +171,6 @@ const ChartOne: React.FC = () => {
           </div>
         </div>
 
-        {/* Plant selection buttons */}
         <div className="flex w-full mt-10 max-w-45 justify-end">
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
             {plants.map((plant) => (
@@ -201,7 +190,6 @@ const ChartOne: React.FC = () => {
         </div>
       </div>
 
-      {/* Chart rendering */}
       <div>
         <div id="chartOne" className="-ml-5">
           {!loading ? (

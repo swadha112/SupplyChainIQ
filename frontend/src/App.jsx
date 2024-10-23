@@ -7,7 +7,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import ECommerce from './pages/Dashboard/Dashboard';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -18,7 +18,7 @@ import DefaultLayout from './layout/DefaultLayout';
 import Home from './pages/Home/Home1';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -115,7 +115,6 @@ function App() {
                     </>
                   }
                 />
-                
                 
                 <Route
                   path="/auth/signin"

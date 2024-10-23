@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
-
-interface ChartThreeState {
-  series: number[];
-}
 
 const options = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
-  colors: ['#3C50E0', '#6577F3', '#89f212'], // Colors for Processing, Shipped, Delivered
+  colors: ['#3C50E0', '#6577F3', '#89ff76'], // Colors for Processing, Shipped, Delivered
   labels: ['Processing', 'Shipped', 'Delivered'], // Updated labels for order status
   legend: {
     show: false,
@@ -48,8 +44,8 @@ const options = {
   ],
 };
 
-const ChartThree: React.FC = () => {
-  const [state, setState] = useState<ChartThreeState>({
+const ChartThree = () => {
+  const [state, setState] = useState({
     series: [0, 0, 0], // Default series for Processing, Shipped, Delivered
   });
 
@@ -84,9 +80,6 @@ const ChartThree: React.FC = () => {
           <h5 className="text-xl font-semibold text-black dark:text-white">
             Order Status Analytics
           </h5>
-        </div>
-        <div>
-          
         </div>
       </div>
 

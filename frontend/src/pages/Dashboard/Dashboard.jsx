@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
-import ChartThree from '../../components/Charts/ChartThree';
-import ChartTwo from '../../components/Charts/ChartTwo';
-import MapOne from '../../components/Maps/MapOne';
+import CardDataStats from '../../components/CardDataStats.jsx';
+import ChartOne from '../../components/Charts/ChartOne.jsx';
+import ChartThree from '../../components/Charts/ChartThree.jsx';
+import ChartTwo from '../../components/Charts/ChartTwo.jsx';
+import MapOne from '../../components/Maps/MapOne.jsx';
 import TableOne from '../../components/Tables/TableOne.jsx';
 
 const ECommerce = () => {

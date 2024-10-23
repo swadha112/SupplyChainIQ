@@ -1,9 +1,8 @@
-import { ApexOptions } from 'apexcharts';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 
-const options: ApexOptions = {
+const options = {
   colors: ['#3C50E0', '#89ff76', '#F1C40F', '#E74C3C'], // Add colors for each category
   chart: {
     fontFamily: 'Satoshi, sans-serif',
@@ -47,16 +46,8 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartTwoState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-  categories: string[];
-}
-
-const ChartTwo: React.FC = () => {
-  const [state, setState] = useState<ChartTwoState>({
+const ChartTwo = () => {
+  const [state, setState] = useState({
     series: [
       { name: 'Skin Care', data: [] },
       { name: 'Lip Care', data: [] },
@@ -74,7 +65,7 @@ const ChartTwo: React.FC = () => {
         const inventory = response.data;
 
         // Extract plant names for the X-axis
-        const plantNames = inventory.map((plant: any) => plant.plant_name);
+        const plantNames = inventory.map((plant) => plant.plant_name);
 
         // Initialize arrays to store stock levels for each category across plants
         const skinCareStock = [];
@@ -83,13 +74,13 @@ const ChartTwo: React.FC = () => {
         const bodyCareStock = [];
 
         // Loop through each plant's products and sum the stock levels by category
-        inventory.forEach((plant: any) => {
+        inventory.forEach((plant) => {
           let skinCareSum = 0;
           let lipCareSum = 0;
           let hairCareSum = 0;
           let bodyCareSum = 0;
 
-          plant.products.forEach((product: any) => {
+          plant.products.forEach((product) => {
             switch (product.category) {
               case 'Skin Care':
                 skinCareSum += product.stock;
