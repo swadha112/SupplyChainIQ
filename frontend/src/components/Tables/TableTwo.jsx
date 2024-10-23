@@ -50,46 +50,46 @@ const Suppliers = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      
-
+    <div style={containerStyle}>
       {productName && (
-        <div className="popup-message" style={{ marginBottom: '20px', color: 'green', fontWeight: 'bold' }}>
+        <div className="popup-message" style={popupMessageStyle}>
           <p>Choose your supplier to reorder {productName}</p>
         </div>
       )}
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Supplier ID</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Performance</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {suppliers.map((supplier) => (
-            <tr key={supplier._id} style={{ borderBottom: '1px solid #ddd' }}>
-              <td>{supplier.supplier_id}</td>
-              <td>{supplier.supplier_name}</td>
-              <td>{supplier.category}</td>
-              <td>{supplier.performance}</td>
-              <td>{supplier.email}</td>
-              <td>
-                <button 
-                  onClick={() => { setSelectedSupplier(supplier); setShowForm(true); }}
-                  style={{ padding: '5px 10px', backgroundColor: '#89ff76', color: 'black', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                >
-                  Send Email
-                </button>
-              </td>
+      <div style={tableContainerStyle}>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th>Supplier ID</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Performance</th>
+              <th>Email</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {suppliers.map((supplier) => (
+              <tr key={supplier._id} style={{ borderBottom: '1px solid #ddd' }}>
+                <td>{supplier.supplier_id}</td>
+                <td>{supplier.name}</td>
+                <td>{supplier.category}</td>
+                <td>{supplier.performance}</td>
+                <td>{supplier.email}</td>
+                <td>
+                  <button 
+                    onClick={() => { setSelectedSupplier(supplier); setShowForm(true); }}
+                    style={buttonStyle}
+                  >
+                    Send Email
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {showForm && (
         <form onSubmit={handleSendEmail} style={formStyle}>
@@ -131,6 +131,37 @@ const Suppliers = () => {
   );
 };
 
+// Responsive styles
+const containerStyle = {
+  padding: '20px',
+};
+
+const popupMessageStyle = {
+  marginBottom: '20px',
+  color: 'green',
+  fontWeight: 'bold',
+};
+
+const tableContainerStyle = {
+  width: '100%',
+  overflowX: 'auto',
+};
+
+const tableStyle = {
+  width: '100%',
+  borderCollapse: 'collapse',
+  minWidth: '600px',
+};
+
+const buttonStyle = {
+  padding: '5px 10px',
+  backgroundColor: '#89ff76',
+  color: 'black',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+};
+
 // Styles for the form
 const formStyle = {
   marginTop: '20px',
@@ -138,7 +169,7 @@ const formStyle = {
   backgroundColor: '#f9f9f9',
   borderRadius: '8px',
   border: '1px solid #ddd',
-  maxWidth: '500px',
+  maxWidth: '100%',
 };
 
 const formTitleStyle = {
@@ -153,7 +184,8 @@ const inputContainerStyle = {
 
 const labelStyle = {
   display: 'inline-block',
-  width: '150px',
+  width: '100%',
+  maxWidth: '150px',
   fontWeight: 'bold',
 };
 
@@ -172,5 +204,22 @@ const submitButtonStyle = {
   borderRadius: '4px',
   cursor: 'pointer',
 };
+
+// Media queries for responsiveness
+const mediaQueries = `
+  @media (max-width: 768px) {
+    ${tableStyle} {
+      min-width: 100%;
+    }
+    ${labelStyle} {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+    ${inputContainerStyle} {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+`;
 
 export default Suppliers;

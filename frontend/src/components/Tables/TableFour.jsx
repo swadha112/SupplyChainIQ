@@ -78,75 +78,139 @@ const Logistics = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={containerStyle}>
       <h2>Logistics</h2>
 
       {/* Logistics Table */}
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-        <thead>
-          <tr>
-            <th>Shipment ID</th>
-            <th>Order ID</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Source</th>
-            <th>Destination</th>
-            <th>Status</th>
-            <th>Est. Delivery</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {logistics.map((shipment) => (
-            <tr key={shipment.shipment_id} style={{ borderBottom: '1px solid #ddd' }}>
-              <td>{shipment.shipment_id}</td>
-              <td>{shipment.order_id}</td>
-              <td>{shipment.product_name}</td> {/* Added Product Name */}
-              <td>{shipment.quantity}</td> {/* Added Quantity */}
-              <td>{shipment.source}</td> {/* Added Source */}
-              <td>{shipment.destination}</td> {/* Added Destination */}
-              <td>
-                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  shipment.status === 'In Transit' ? 'bg-green-100 text-green-800' :
-                  shipment.status === 'Shipped' ? 'bg-yellow-100 text-yellow-800' :
-                  shipment.status === 'Delivered' ? 'bg-blue-100 text-blue-800' :
-                  'bg-purple-100 text-purple-800'
-                }`}>
-                  {shipment.status}
-                </span>
-              </td>
-              <td>{shipment.estimated_delivery}</td>
-              <td>
-                <div className="flex space-x-2">
-                  {/* Track Order Button */}
-                  <button onClick={() => handleTrackOrder(shipment)}>
-                    Track Order
-                  </button>
-                  {/* Status Update Dropdown */}
-                  <select
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    value={newStatus}
-                    className="bg-white border rounded px-2"
-                  >
-                    <option value="">Update Status</option>
-                    <option value="Processing">Processing</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                  </select>
-                  <button onClick={() => handleStatusUpdate(shipment.shipment_id)}>Save</button>
-                </div>
-              </td>
+      <div style={tableContainerStyle}>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th>Shipment ID</th>
+              <th>Order ID</th>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Status</th>
+              <th>Est. Delivery</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {logistics.map((shipment) => (
+              <tr key={shipment.shipment_id} style={{ borderBottom: '1px solid #ddd' }}>
+                <td>{shipment.shipment_id}</td>
+                <td>{shipment.order_id}</td>
+                <td>{shipment.product_name}</td>
+                <td>{shipment.quantity}</td>
+                <td>{shipment.source}</td>
+                <td>{shipment.destination}</td>
+                <td>
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                    shipment.status === 'In Transit' ? 'bg-green-100 text-green-800' :
+                    shipment.status === 'Shipped' ? 'bg-yellow-100 text-yellow-800' :
+                    shipment.status === 'Delivered' ? 'bg-blue-100 text-blue-800' :
+                    'bg-purple-100 text-purple-800'
+                  }`}>
+                    {shipment.status}
+                  </span>
+                </td>
+                <td>{shipment.estimated_delivery}</td>
+                <td>
+                  <div style={actionContainerStyle}>
+                    {/* Track Order Button */}
+                    <button onClick={() => handleTrackOrder(shipment)} style={buttonStyle}>
+                      Track Order
+                    </button>
+                    {/* Status Update Dropdown */}
+                    <select
+                      onChange={(e) => setNewStatus(e.target.value)}
+                      value={newStatus}
+                      style={selectStyle}
+                    >
+                      <option value="">Update Status</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                    <button onClick={() => handleStatusUpdate(shipment.shipment_id)} style={buttonStyle}>Save</button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Map Container */}
       {selectedShipment && (
-        <div id="map" style={{ height: '400px', marginTop: '20px' }}></div>
+        <div id="map" style={mapStyle}></div>
       )}
     </div>
   );
 };
+
+// Styles for responsiveness
+const containerStyle = {
+  padding: '20px',
+  maxWidth: '100%',
+  margin: '0 auto',
+};
+
+const tableContainerStyle = {
+  width: '100%',
+  overflowX: 'auto', // Make table scrollable horizontally on small screens
+};
+
+const tableStyle = {
+  width: '100%',
+  borderCollapse: 'collapse',
+  minWidth: '900px', // Ensure table doesn't get too small on small screens
+};
+
+const actionContainerStyle = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+};
+
+const buttonStyle = {
+  padding: '5px 10px',
+  backgroundColor: '#89ff76',
+  color: 'black',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+  marginBottom: '5px', // Space between buttons
+};
+
+const selectStyle = {
+  padding: '5px',
+  borderRadius: '4px',
+  marginBottom: '5px', // Space between select and button
+};
+
+const mapStyle = {
+  height: '400px',
+  marginTop: '20px',
+};
+
+// Media queries for responsiveness
+const mediaQueries = `
+  @media (max-width: 768px) {
+    ${tableStyle} {
+      min-width: 100%;
+    }
+    ${actionContainerStyle} {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    ${buttonStyle} {
+      margin-bottom: 10px;
+    }
+  }
+`;
 
 export default Logistics;
