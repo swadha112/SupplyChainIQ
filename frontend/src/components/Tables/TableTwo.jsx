@@ -74,7 +74,7 @@ const Suppliers = () => {
           {suppliers.map((supplier) => (
             <tr key={supplier._id} style={{ borderBottom: '1px solid #ddd' }}>
               <td>{supplier.supplier_id}</td>
-              <td>{supplier.name}</td>
+              <td>{supplier.supplier_name}</td>
               <td>{supplier.category}</td>
               <td>{supplier.performance}</td>
               <td>{supplier.email}</td>
