@@ -1,5 +1,9 @@
 const Logistics = require('../models/logistics');
 const Order = require('../models/order');
+const { createObjectCsvWriter } = require('csv-writer');
+const path = require('path');
+const ARIMA = require('arima');
+const fs = require('fs');
 
 // Fetch all logistics data
 const getLogistics = async (req, res, next) => {
@@ -36,8 +40,90 @@ const updateShipmentStatus = async (req, res, next) => {
     next(err); // Pass errors to the error handler
   }
 };
+const forecastLogistics = async (req, res, next) => {
+  const { plant, periods } = req.body;
+
+  try {
+    const logisticsData = await Logistics.find({ source: plant });
+
+    if (!logisticsData || logisticsData.length === 0) {
+      return res.status(404).json({ message: `No logistics data found for plant ${plant}` });
+    }
+
+    const tmpDir = path.join(__dirname, '../tmp');
+
+    // Ensure the tmp directory exists
+    if (!fs.existsSync(tmpDir)) {
+      fs.mkdirSync(tmpDir);
+    }
+
+    const csvFilePath = path.join(tmpDir, 'logistics_data.csv');
+
+    // Write logistics data to CSV dynamically
+    const csvWriter = createObjectCsvWriter({
+      path: csvFilePath,
+      header: [
+        { id: 'estimated_delivery', title: 'Date' },
+        { id: 'quantity', title: 'Quantity' },
+        { id: 'product_name', title: 'Product Name' },
+      ]
+    });
+
+    const dataForCSV = logisticsData.map(item => ({
+      estimated_delivery: item.estimated_delivery,
+      quantity: item.quantity,
+      product_name: item.product_name
+    }));
+
+    await csvWriter.writeRecords(dataForCSV); // Generate the CSV file
+
+    // Prepare data for ARIMA prediction
+    const quantities = logisticsData.map(item => item.quantity);
+    console.log("Quantities for ARIMA model: ", quantities);
+
+    if (quantities.length < 2) {
+      return res.status(400).json({ message: 'Not enough data for forecasting' });
+    }
+
+    // Initialize ARIMA model
+    const arima = new ARIMA({
+      p: 2,  // autoregressive order
+      d: 1,  // differencing order
+      q: 2,  // moving average order
+      verbose: true
+    }).train(quantities);
+
+    // Forecast for the given number of periods
+    const [forecastedQuantities] = arima.predict(periods || 12);  // Extract only the forecasted values
+
+    // Prepare forecast data with future dates
+    const today = new Date();
+    const timeSeriesForecast = forecastedQuantities.map((forecast, idx) => {
+      const forecastDate = new Date(today);
+      forecastDate.setDate(today.getDate() + (idx + 1)); // Increment the date by 1 for each prediction
+      return {
+        date: forecastDate.toISOString().split('T')[0], // Format as YYYY-MM-DD
+        forecast: forecast
+      };
+    });
+
+    // Generate item-wise forecast based on product names
+    const itemWiseForecast = logisticsData.map(item => ({
+      product_name: item.product_name,
+      forecast: item.quantity // For simplicity, we can use current quantity (could be further customized)
+    }));
+
+    res.status(200).json({timeSeriesForecast, itemWiseForecast}); // Send forecast to frontend
+  } catch (err) {
+    console.error('Error generating forecast:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ message: 'Error generating forecast', error: err.message });
+    }
+  }
+};
 
 module.exports = {
   getLogistics,
   updateShipmentStatus,
+  forecastLogistics,
 };
