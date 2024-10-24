@@ -30,9 +30,15 @@ const Logistics = () => {
     }
     
     try {
+<<<<<<< HEAD
       await axios.put(`http://localhost:5050/api/logistics/status`, { shipment_id, newStatus });
       // Re-fetch updated logistics data
       const updatedLogistics = await axios.get('http://localhost:5050/api/logistics');
+=======
+      await axios.put(`https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics/status`, { shipment_id, newStatus });
+      // Re-fetch updated logistics data
+      const updatedLogistics = await axios.get('https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics');
+>>>>>>> 5aac14fde5053ab7ac2df80018ed849d23504ce1
       setLogistics(updatedLogistics.data);
       setNewStatus(''); // Reset status after saving
     } catch (err) {
