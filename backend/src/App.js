@@ -58,10 +58,11 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors(
-  {origin: 'https://supply-chain-iq.vercel.app', 
-  }));
-
+app.use(cors({
+  origin: 'https://supply-chain-iq.vercel.app', // Your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Routes
