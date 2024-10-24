@@ -31,11 +31,7 @@ const Suppliers = () => {
   const handleSendEmail = async (e) => {
     e.preventDefault();
     try {
-<<<<<<< HEAD
       await axios.post('http://localhost:5050/api/send-email', {
-=======
-      await axios.post('https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/send-email', {
->>>>>>> 5aac14fde5053ab7ac2df80018ed849d23504ce1
         supplierEmail: selectedSupplier.email,
         productName,
         quantity,

@@ -25,11 +25,7 @@ const Orders = () => {
     // Fetch orders from the backend API
     const fetchOrders = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get('http://localhost:5050/api/orders');
-=======
-        const response = await axios.get('https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/orders');
->>>>>>> 5aac14fde5053ab7ac2df80018ed849d23504ce1
         setOrders(response.data);
         setLoading(false);
       } catch (err) {

@@ -6,13 +6,13 @@
   "scripts": {
     "start": "nodemon server.js",
     "start_cron": "node backupCron.js",
-    "build": "tsc --build",
-    "start:prod": "pm2 start App.ts --name 'servercode' && pm2 save"
+    "build": "npm run build",
+    "start:prod": "pm2 start App.js --name 'servercode' && pm2 save"
   },
   "keywords": [
     "Startup Marketplace"
   ],
-  "author": "Swadha Aourva",
+  "author": "Swadha Apurva",
   "license": "ISC",
   "devDependencies": {
     "@types/compression": "^1.7.5",

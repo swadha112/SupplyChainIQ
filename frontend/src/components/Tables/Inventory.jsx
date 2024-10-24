@@ -73,11 +73,7 @@ const Inventory = () => {
     setLoadingForecast(true);
     try {
       const response = await axios.post(
-<<<<<<< HEAD
         'http://localhost:5050/api/logistics/forecast',
-=======
-        'https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics/forecast',
->>>>>>> 5aac14fde5053ab7ac2df80018ed849d23504ce1
         {
           plant: activePlant, // Send the selected plant name to the backend for forecasting
           periods: 12, //forecast ffor next 12 periods
