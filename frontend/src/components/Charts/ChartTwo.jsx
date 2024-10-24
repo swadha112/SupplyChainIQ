@@ -61,7 +61,7 @@ const ChartTwo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://supply-chain-iq.vercel.app/api/inventory');
+        const response = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/inventory');
         const inventory = response.data;
 
         // Extract plant names for the X-axis

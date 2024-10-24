@@ -59,7 +59,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://supply-chain-iq.vercel.app'
+  origin: 'https://supply-chain-iq-backend-swadha112s-projects.vercel.app/'
 }));
 
 app.use(express.json());

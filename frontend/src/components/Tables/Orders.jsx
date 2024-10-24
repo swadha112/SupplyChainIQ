@@ -25,7 +25,7 @@ const Orders = () => {
     // Fetch orders from the backend API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('https://supply-chain-iq.vercel.app/api/orders');
+        const response = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/orders');
         setOrders(response.data);
         setLoading(false);
       } catch (err) {
@@ -48,7 +48,7 @@ const Orders = () => {
       // Create new order (status defaults to "Processing")
       await axios.post('https://supply-chain-iq.vercel.app/api/orders', newOrder);
       // Re-fetch orders after adding a new one
-      const updatedOrders = await axios.get('https://supply-chain-iq.vercel.app/api/orders');
+      const updatedOrders = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/orders');
       setOrders(updatedOrders.data);
       setSuccessMessage('Order added successfully!');
       setNewOrder({ product: products[0], quantity: 1, date: '', destination: '' });

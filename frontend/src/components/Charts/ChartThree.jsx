@@ -53,7 +53,7 @@ const ChartThree = () => {
     // Fetch order data from your backend API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('https://supply-chain-iq.vercel.app/api/orders'); // Update with your API endpoint
+        const response = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/orders'); // Update with your API endpoint
 
         // Process the order data to count the number of each status
         const orders = response.data;

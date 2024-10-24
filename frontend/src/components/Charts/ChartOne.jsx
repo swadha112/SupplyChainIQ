@@ -114,7 +114,7 @@ const ChartOne = () => {
   useEffect(() => {
     const fetchInventoryData = async () => {
       try {
-        const response = await axios.get('https://supply-chain-iq.vercel.app/api/inventory');
+        const response = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/inventory');
         const inventory = response.data;
 
         const plantData = inventory.find((plant) => plant.plant_name === selectedPlant);

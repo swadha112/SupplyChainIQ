@@ -17,7 +17,7 @@ const Suppliers = () => {
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await axios.get('https://supply-chain-iq.vercel.app/api/suppliers');
+        const response = await axios.get('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/suppliers');
         setSuppliers(response.data);
         setLoading(false);
       } catch (err) {
@@ -31,7 +31,7 @@ const Suppliers = () => {
   const handleSendEmail = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://supply-chain-iq.vercel.app/api/send-email', {
+      await axios.post('https://supply-chain-iq-backend-swadha112s-projects.vercel.app/api/send-email', {
         supplierEmail: selectedSupplier.email,
         productName,
         quantity,
