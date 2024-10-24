@@ -44,7 +44,7 @@ const Inventory = () => {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get('http://localhost:5050/api/inventory');
+        const response = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/inventory');
         setInventory(response.data);
         setActivePlant(response.data[0]?.plant_name || null); // Set the first plant as default active
         setLoading(false);
@@ -73,7 +73,7 @@ const Inventory = () => {
     setLoadingForecast(true);
     try {
       const response = await axios.post(
-        'http://localhost:5050/api/logistics/forecast',
+        'http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics/forecast',
         {
           plant: activePlant, // Send the selected plant name to the backend for forecasting
           periods: 12, //forecast ffor next 12 periods

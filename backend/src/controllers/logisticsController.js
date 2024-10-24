@@ -110,7 +110,7 @@ const forecastLogistics = async (req, res, next) => {
     // Generate item-wise forecast based on product names
     const itemWiseForecast = logisticsData.map(item => ({
       product_name: item.product_name,
-      forecast: item.quantity // For simplicity, we can use current quantity (could be further customized)
+      forecast: item.quantity // using current quantity 
     }));
 
     res.status(200).json({timeSeriesForecast, itemWiseForecast}); // Send forecast to frontend
