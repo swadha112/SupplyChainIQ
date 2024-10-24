@@ -13,7 +13,7 @@ const Logistics = () => {
     // Fetch logistics data from the backend
     const fetchLogistics = async () => {
       try {
-        const response = await axios.get('https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/logistics');
+        const response = await axios.get('https://supply-chain-iq-backend-8p59gsibe-swadha112s-projects.vercel.app/api/logistics');
         setLogistics(response.data);
       } catch (err) {
         console.error('Error fetching logistics data', err);
@@ -30,9 +30,9 @@ const Logistics = () => {
     }
     
     try {
-      await axios.put(`https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/logistics/status`, { shipment_id, newStatus });
+      await axios.put(`https://supply-chain-iq-backend-8p59gsibe-swadha112s-projects.vercel.app/api/logistics/status`, { shipment_id, newStatus });
       // Re-fetch updated logistics data
-      const updatedLogistics = await axios.get('https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/logistics');
+      const updatedLogistics = await axios.get('https://supply-chain-iq-backend-8p59gsibe-swadha112s-projects.vercel.app/api/logistics');
       setLogistics(updatedLogistics.data);
       setNewStatus(''); // Reset status after saving
     } catch (err) {

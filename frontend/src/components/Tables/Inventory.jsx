@@ -44,7 +44,7 @@ const Inventory = () => {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get('https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/inventory');
+        const response = await axios.get('https://supply-chain-iq-backend-8p59gsibe-swadha112s-projects.vercel.app/api/inventory');
         setInventory(response.data);
         setActivePlant(response.data[0]?.plant_name || null); // Set the first plant as default active
         setLoading(false);
@@ -73,7 +73,7 @@ const Inventory = () => {
     setLoadingForecast(true);
     try {
       const response = await axios.post( 
-        'https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/logistics/forecast',
+        'https://supply-chain-iq-backend-8p59gsibe-swadha112s-projects.vercel.app/api/logistics/forecast',
         {
           plant: activePlant, // Send the selected plant name to the backend for forecasting
           periods: 12, //forecast ffor next 12 periods
