@@ -34,7 +34,7 @@ const createToast=(title: string, msg: string, type: number)=>{toast.custom((t) 
           <span
             className="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="https://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
@@ -53,10 +53,10 @@ const createToast=(title: string, msg: string, type: number)=>{toast.custom((t) 
   ))};
 // let dataJSON: any;
 // let headers = new Headers();
-// headers.append('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
+// headers.append('Access-Control-Allow-Origin', 'https://127.0.0.1:8000');
 // headers.append("Access-Control-Allow-Methods", 'POST');
 // headers.append("Access-Control-Allow-Headers", 'Content-Type, Authorization');
-// fetch("http://127.0.0.1:8000/data",{method:'POST',headers:headers})
+// fetch("https://127.0.0.1:8000/data",{method:'POST',headers:headers})
 //   .then(response => {
 //     return response
 //   })

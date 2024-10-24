@@ -79,7 +79,7 @@ export const signin = (req: Request, res: Response) => {
 
       res.cookie("jwt", jwtToken, {
         expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
+        httpsOnly: true,
         secure: req.secure || req.headers["x-forwarded-proto"] === "https",
       });
 

@@ -25,7 +25,7 @@ const Orders = () => {
     // Fetch orders from the backend API
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/orders');
+        const response = await axios.get('http://localhost:5050/api/orders');
         setOrders(response.data);
         setLoading(false);
       } catch (err) {
@@ -46,9 +46,9 @@ const Orders = () => {
     e.preventDefault();
     try {
       // Create new order (status defaults to "Processing")
-      await axios.post('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/orders', newOrder);
+      await axios.post('http://localhost:5050/api/orders', newOrder);
       // Re-fetch orders after adding a new one
-      const updatedOrders = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/orders');
+      const updatedOrders = await axios.get('http://localhost:5050/api/orders');
       setOrders(updatedOrders.data);
       setSuccessMessage('Order added successfully!');
       setNewOrder({ product: products[0], quantity: 1, date: '', destination: '' });

@@ -33,7 +33,7 @@ const Settings = () => {
                             height="20"
                             viewBox="0 0 20 20"
                             fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns="https://www.w3.org/2000/svg"
                           >
                             <g opacity="0.8">
                               <path
@@ -95,7 +95,7 @@ const Settings = () => {
                           height="20"
                           viewBox="0 0 20 20"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https://www.w3.org/2000/svg"
                         >
                           <g opacity="0.8">
                             <path
@@ -156,7 +156,7 @@ const Settings = () => {
                           height="20"
                           viewBox="0 0 20 20"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https://www.w3.org/2000/svg"
                         >
                           <g opacity="0.8" clipPath="url(#clip0_88_10224)">
                             <path
@@ -253,7 +253,7 @@ const Settings = () => {
                           height="16"
                           viewBox="0 0 16 16"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns="https://www.w3.org/2000/svg"
                         >
                           <path
                             fillRule="evenodd"

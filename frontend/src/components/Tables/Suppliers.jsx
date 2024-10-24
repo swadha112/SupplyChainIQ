@@ -17,7 +17,7 @@ const Suppliers = () => {
   useEffect(() => {
     const fetchSuppliers = async () => {
       try {
-        const response = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/suppliers');
+        const response = await axios.get('http://localhost:5050/api/suppliers');
         setSuppliers(response.data);
         setLoading(false);
       } catch (err) {
@@ -31,7 +31,7 @@ const Suppliers = () => {
   const handleSendEmail = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/send-email', {
+      await axios.post('http://localhost:5050/api/send-email', {
         supplierEmail: selectedSupplier.email,
         productName,
         quantity,
