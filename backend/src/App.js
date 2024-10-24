@@ -58,9 +58,7 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: 'https://supply-chain-iq-backend-swadha112s-projects.vercel.app/'
-}));
+app.use(cors());
 
 app.use(express.json());
 
