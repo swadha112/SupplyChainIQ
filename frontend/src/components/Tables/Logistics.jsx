@@ -13,7 +13,7 @@ const Logistics = () => {
     // Fetch logistics data from the backend
     const fetchLogistics = async () => {
       try {
-        const response = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics');
+        const response = await axios.get('https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics');
         setLogistics(response.data);
       } catch (err) {
         console.error('Error fetching logistics data', err);
@@ -30,9 +30,9 @@ const Logistics = () => {
     }
     
     try {
-      await axios.put(`http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics/status`, { shipment_id, newStatus });
+      await axios.put(`https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics/status`, { shipment_id, newStatus });
       // Re-fetch updated logistics data
-      const updatedLogistics = await axios.get('http://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics');
+      const updatedLogistics = await axios.get('https://supplychain-hyeo-apurvas-projects-a5f1cbec.vercel.app/api/logistics');
       setLogistics(updatedLogistics.data);
       setNewStatus(''); // Reset status after saving
     } catch (err) {
