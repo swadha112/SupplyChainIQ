@@ -20,11 +20,11 @@ const ECommerce = () => {
     const fetchData = async () => {
       try {
         // Fetch inventory data from API
-        const inventoryResponse = await axios.get('http://localhost:5050/api/inventory');
+        const inventoryResponse = await axios.get('https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/inventory');
         setInventoryData(inventoryResponse.data);
 
         // Fetch orders data from API
-        const ordersResponse = await axios.get('http://localhost:5050/api/orders');
+        const ordersResponse = await axios.get('https://vercel.com/api/toolbar/link/supply-chain-iq-backend-swadha112s-projects.vercel.app?via=project-dashboard-alias-list&p=1&page=/api/orders');
         setOrdersData(ordersResponse.data);
 
         // Calculate total inventory (sum of stock across all products and plants)
